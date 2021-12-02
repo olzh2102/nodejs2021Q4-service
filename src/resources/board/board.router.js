@@ -11,21 +11,21 @@ const routes = [
     url: '/boards',
     handler: boardController.addBoard,
   },
-  //   {
-  //     method: 'GET',
-  //     url: '/boards/:boardId',
-  //     handler: boardController.getSingleBoard,
-  //   },
-  //   {
-  //     method: 'PUT',
-  //     url: '/boards/:boardId',
-  //     handler: boardController.updateSingleBoard,
-  //   },
-  //   {
-  //     method: 'DELETE',
-  //     url: '/boards/:boardId',
-  //     handler: boardController.removeBoard,
-  //   },
+  {
+    method: 'GET',
+    url: '/boards/:boardId',
+    handler: boardController.getSingleBoard,
+  },
+  {
+    method: 'PUT',
+    url: '/boards/:boardId',
+    handler: boardController.updateBoard,
+  },
+  {
+    method: 'DELETE',
+    url: '/boards/:boardId',
+    handler: boardController.removeBoard,
+  },
 ];
 
 module.exports = routes;

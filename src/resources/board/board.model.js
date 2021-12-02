@@ -8,7 +8,7 @@ class Board {
   } = {}) {
     this.id = id;
     this.title = title;
-    this.columns = columns;
+    this.columns = columns.map((c) => ({ ...c, id: uuid.v4() }));
   }
 
   static toResponse(board) {

@@ -47,7 +47,7 @@ const addUser = async (req, reply) => {
 const removeUser = async (req, reply) => {
   try {
     await userService.remove(req.params.userId);
-    reply(204);
+    reply.code(204);
   } catch (error) {
     console.log(error.message);
     reply.code(500).send('Oops!');
