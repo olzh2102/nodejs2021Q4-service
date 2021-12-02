@@ -1,24 +1,20 @@
-const express = require('express');
-const swaggerUI = require('swagger-ui-express');
-const path = require('path');
-const YAML = require('yamljs');
-const userRouter = require('./resources/users/user.router');
+// const swaggerUI = require('swagger-ui-express');
+// const YAML = require('yamljs');
 
-const app = express();
-const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
+const fastify = require('fastify');
 
-app.use(express.json());
+const userRoutes = require('./resources/users/user.router');
+const boardRoutes = require('./resources/board/board.router');
 
-app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+const build = (options = {}) => {
+  const app = fastify(options);
 
-app.use('/', (req, res, next) => {
-  if (req.originalUrl === '/') {
-    res.send('Service is running!');
-    return;
-  }
-  next();
-});
+  userRoutes.forEach((route) => app.route(route));
+  boardRoutes.forEach((route) => app.route(route));
 
-app.use('/users', userRouter);
+  return app;
+};
 
-module.exports = app;
+module.exports = {
+  build,
+};
