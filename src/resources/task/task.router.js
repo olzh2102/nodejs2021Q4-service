@@ -1,11 +1,11 @@
 const taskController = require('./task.controller');
 
 function router(fastify, options, done) {
-  fastify.get('/boards/:boardId/tasks', taskController.getTasks);
-  fastify.post('/boards/:boardId/tasks', taskController.addTask);
-  fastify.get('/boards/:boardId/tasks/:taskId', taskController.getSingleTask);
-  fastify.delete('/boards/:boardId/tasks/:taskId', taskController.removeTask);
-  fastify.put('/boards/:boardId/tasks/:taskId', taskController.updateTask);
+  fastify.get('/tasks', taskController.getTasks);
+  fastify.post('/tasks', taskController.addTask);
+  fastify.get('/tasks/:taskId', taskController.getSingleTask);
+  fastify.delete('/tasks/:taskId', taskController.removeTask);
+  fastify.put('/tasks/:taskId', taskController.updateTask);
 
   done();
 }

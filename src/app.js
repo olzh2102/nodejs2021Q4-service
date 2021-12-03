@@ -20,7 +20,7 @@ const build = (options = {}) => {
 
   app.register(userRoutes);
   app.register(boardRoutes);
-  app.register(taskRoutes);
+  app.register(taskRoutes, { prefix: '/boards/:boardId' });
 
   return app;
 };
