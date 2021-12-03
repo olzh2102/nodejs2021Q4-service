@@ -1,34 +1,46 @@
-const { readFile, writeFile } = require('fs');
-const { join } = require('path');
-
 const Board = require('./board.model');
 
+let boards = [];
+
 const getAll = () =>
-  new Promise((resolve, reject) => {
-    readFile(
-      join(`${process.cwd()}/src/`, 'board.db.json'),
-      'utf-8',
-      (err, data) => {
-        if (err) reject(err);
-        else resolve(JSON.parse(data).boards.map(Board.toResponse));
-      }
-    );
+  new Promise((resolve) => {
+    resolve(boards);
   });
 
-const insert = (boards) =>
+const getById = (id) =>
   new Promise((resolve, reject) => {
-    writeFile(
-      join(`${process.cwd()}/src/`, 'board.db.json'),
-      JSON.stringify({ boards }),
-      'utf-8',
-      (err) => {
-        if (err) reject(err);
-        resolve();
-      }
-    );
+    const board = boards.find((b) => b.id === id);
+    if (!board) reject(new Error('Could not find requested board!'));
+    resolve(board);
+  });
+
+const create = (board) =>
+  new Promise((resolve) => {
+    const newBoard = new Board(board);
+    boards = boards.concat(newBoard);
+    resolve(newBoard);
+  });
+
+const update = async (id, fields) =>
+  new Promise((resolve) => {
+    const board = { ...boards.find((b) => b.id === id), ...fields };
+    boards = boards.map((b) => {
+      if (b.id === id) return board;
+      return b;
+    });
+    resolve(board);
+  });
+
+const remove = async (id) =>
+  new Promise((resolve) => {
+    boards = boards.filter((b) => b.id !== id);
+    resolve('Board deleted successfully');
   });
 
 module.exports = {
   getAll,
-  insert,
+  getById,
+  create,
+  remove,
+  update,
 };

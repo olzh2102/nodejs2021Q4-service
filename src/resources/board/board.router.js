@@ -1,31 +1,12 @@
 const boardController = require('./board.controller');
 
-const routes = [
-  {
-    method: 'GET',
-    url: '/boards',
-    handler: boardController.getBoards,
-  },
-  {
-    method: 'POST',
-    url: '/boards',
-    handler: boardController.addBoard,
-  },
-  {
-    method: 'GET',
-    url: '/boards/:boardId',
-    handler: boardController.getSingleBoard,
-  },
-  {
-    method: 'PUT',
-    url: '/boards/:boardId',
-    handler: boardController.updateBoard,
-  },
-  {
-    method: 'DELETE',
-    url: '/boards/:boardId',
-    handler: boardController.removeBoard,
-  },
-];
+function router(fastify, options, done) {
+  fastify.get('/boards', boardController.getBoards);
+  fastify.get('/boards/:boardId', boardController.getSingleBoard);
+  fastify.post('/boards', boardController.addBoard);
+  fastify.delete('/boards/:boardId', boardController.removeBoard);
+  fastify.put('/boards/:boardId', boardController.updateBoard);
+  done();
+}
 
-module.exports = routes;
+module.exports = router;

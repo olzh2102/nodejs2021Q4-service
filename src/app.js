@@ -5,12 +5,14 @@ const fastify = require('fastify');
 
 const userRoutes = require('./resources/users/user.router');
 const boardRoutes = require('./resources/board/board.router');
+const taskRoutes = require('./resources/task/task.router');
 
 const build = (options = {}) => {
   const app = fastify(options);
 
-  userRoutes.forEach((route) => app.route(route));
-  boardRoutes.forEach((route) => app.route(route));
+  app.register(userRoutes);
+  app.register(boardRoutes);
+  app.register(taskRoutes);
 
   return app;
 };

@@ -1,31 +1,13 @@
 const userController = require('./user.controller');
 
-const routes = [
-  {
-    method: 'GET',
-    url: '/users',
-    handler: userController.getUsers,
-  },
-  {
-    method: 'POST',
-    url: '/users',
-    handler: userController.addUser,
-  },
-  {
-    method: 'GET',
-    url: '/users/:userId',
-    handler: userController.getSingleUser,
-  },
-  {
-    method: 'DELETE',
-    url: '/users/:userId',
-    handler: userController.removeUser,
-  },
-  {
-    method: 'PUT',
-    url: '/users/:userId',
-    handler: userController.updateUser,
-  },
-];
+function router(fastify, options, done) {
+  fastify.get('/users', userController.getUsers);
+  fastify.get('/users/:userId', userController.getSingleUser);
+  fastify.post('/users', userController.addUser);
+  fastify.delete('/users/:userId', userController.removeUser);
+  fastify.put('/users/:userId', userController.updateUser);
 
-module.exports = routes;
+  done();
+}
+
+module.exports = router;

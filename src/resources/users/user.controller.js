@@ -26,15 +26,9 @@ const getSingleUser = async (req, reply) => {
 };
 
 const addUser = async (req, reply) => {
-  const user = new User(req.body);
-
   try {
-    await userService.create(user);
-
-    reply
-      .code(201)
-      .header('Content-Type', 'application/json')
-      .send(User.toResponse(user));
+    const newUser = await userService.create(req.body);
+    reply.code(201).header('Content-Type', 'application/json').send(newUser);
   } catch (e) {
     console.log(e.message);
 
@@ -46,8 +40,8 @@ const addUser = async (req, reply) => {
 
 const removeUser = async (req, reply) => {
   try {
-    await userService.remove(req.params.userId);
-    reply.code(204);
+    const message = await userService.remove(req.params.userId);
+    reply.code(200).send({ message });
   } catch (error) {
     console.log(error.message);
     reply.code(500).send('Oops!');

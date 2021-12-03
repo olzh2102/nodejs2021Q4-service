@@ -17,7 +17,7 @@ const getSingleBoard = async (req, reply) => {
     reply.code(200).header('Content-Type', 'application/json').send(board);
   } catch (error) {
     console.log(error.message);
-    reply.code(500).send('Oops!');
+    reply.code(404).send({ Error: error.message });
   }
 };
 
@@ -54,8 +54,8 @@ const updateBoard = async (req, reply) => {
 
 const removeBoard = async (req, reply) => {
   try {
-    await boardService.remove(req.params.boardId);
-    reply.code(204);
+    const message = await boardService.remove(req.params.boardId);
+    reply.code(200).send({ message });
   } catch (error) {
     console.log(error.message);
     reply.code(500).send('Oops!');

@@ -10,8 +10,7 @@ const getAll = async () => {
 
 const create = async (user) => {
   try {
-    const users = await userRepo.getAll();
-    return await userRepo.insert(users.concat(user));
+    return await userRepo.create(user);
   } catch (error) {
     throw new Error(error.message);
   }
@@ -19,8 +18,7 @@ const create = async (user) => {
 
 const getById = async (id) => {
   try {
-    const users = await userRepo.getAll();
-    return users.find((u) => u.id === id);
+    return await userRepo.getById(id);
   } catch (error) {
     throw new Error(error.message);
   }
@@ -28,8 +26,7 @@ const getById = async (id) => {
 
 const remove = async (id) => {
   try {
-    const users = await userRepo.getAll();
-    return await userRepo.insert(users.filter((u) => u.id !== id));
+    return await userRepo.remove(id);
   } catch (error) {
     throw new Error(error.message);
   }
@@ -37,14 +34,7 @@ const remove = async (id) => {
 
 const update = async (id, fields) => {
   try {
-    const users = await userRepo.getAll();
-    const updatedUser = { ...users.find((u) => u.id === id), ...fields };
-    const updatedUsers = users.map((u) => {
-      if (u.id === id) return updatedUser;
-      return u;
-    });
-    await userRepo.insert(updatedUsers);
-    return updatedUser;
+    return await userRepo.update(id, fields);
   } catch (error) {
     throw new Error(error.message);
   }
