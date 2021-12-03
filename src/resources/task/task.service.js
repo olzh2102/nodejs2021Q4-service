@@ -34,10 +34,13 @@ const remove = async (boardId, taskId) => {
   }
 };
 
+const insert = async (tasks) => taskRepo.insert(tasks);
+
 module.exports = {
   getAll,
   getById,
   create,
   update,
   remove,
+  insert,
 };

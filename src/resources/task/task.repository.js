@@ -10,9 +10,13 @@ const getAll = (boardId) =>
 
 const getById = (boardId, taskId) =>
   new Promise((resolve, reject) => {
-    const task = boardId && tasks.find((t) => t.id === taskId);
-    if (!task) reject(new Error('Could not find requested board!'));
-    resolve(task);
+    if (boardId) {
+      const task = tasks.find((t) => t.id === taskId);
+      if (!task) reject(new Error('Could not find requested board!'));
+      resolve(task);
+    } else {
+      reject(new Error('Could find task by board id'));
+    }
   });
 
 const create = (boardId, task) =>
@@ -41,10 +45,17 @@ const remove = async (boardId, taskId) =>
     reject(new Error('Could not find requested board!'));
   });
 
+const insert = async (updatedTasks) =>
+  new Promise((resolve) => {
+    tasks = updatedTasks;
+    resolve();
+  });
+
 module.exports = {
   getAll,
   getById,
   create,
   remove,
   update,
+  insert,
 };

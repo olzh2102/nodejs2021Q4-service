@@ -1,4 +1,5 @@
 const boardRepo = require('./board.repository');
+const taskService = require('../task/task.service');
 
 const getAll = async () => {
   try {
@@ -28,6 +29,7 @@ const update = async (id, fields) => {
 
 const remove = async (id) => {
   try {
+    await taskService.insert([]);
     return await boardRepo.remove(id);
   } catch (error) {
     throw new Error(error.message);
