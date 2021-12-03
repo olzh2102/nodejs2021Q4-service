@@ -6,7 +6,6 @@ const getBoards = async (req, reply) => {
     const boards = await boardService.getAll();
     reply.code(200).header('Content-Type', 'application/json').send(boards);
   } catch (e) {
-    console.log(e.message);
     reply.code(500).send('Oops!');
   }
 };
@@ -16,7 +15,6 @@ const getSingleBoard = async (req, reply) => {
     const board = await boardService.getById(req.params.boardId);
     reply.code(200).header('Content-Type', 'application/json').send(board);
   } catch (error) {
-    console.log(error.message);
     reply.code(404).send({ Error: error.message });
   }
 };
@@ -31,7 +29,6 @@ const addBoard = async (req, reply) => {
       .header('Content-Type', 'application/json')
       .send(Board.toResponse(board));
   } catch (error) {
-    console.log(error.message);
     reply.code(500).send('Oops!');
   }
 };
@@ -47,7 +44,6 @@ const updateBoard = async (req, reply) => {
       .header('Content-Type', 'application/json')
       .send(updatedBoard);
   } catch (error) {
-    console.log(error.message);
     reply.code(500).send('Oops!');
   }
 };
@@ -57,7 +53,6 @@ const removeBoard = async (req, reply) => {
     const message = await boardService.remove(req.params.boardId);
     reply.code(200).send({ message });
   } catch (error) {
-    console.log(error.message);
     reply.code(500).send('Oops!');
   }
 };

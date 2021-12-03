@@ -7,7 +7,6 @@ const getUsers = async (req, reply) => {
     const users = await userService.getAll();
     reply.code(200).header('Content-Type', 'application/json').send(users);
   } catch (e) {
-    console.log(e.message);
     reply.code(500).send('Oops!');
   }
 };
@@ -20,7 +19,6 @@ const getSingleUser = async (req, reply) => {
       .header('Content-Type', 'application/json')
       .send(User.toResponse(user));
   } catch (error) {
-    console.log(error.message);
     reply.code(500).send('Oops!');
   }
 };
@@ -30,8 +28,6 @@ const addUser = async (req, reply) => {
     const newUser = await userService.create(req.body);
     reply.code(201).header('Content-Type', 'application/json').send(newUser);
   } catch (e) {
-    console.log(e.message);
-
     reply
       .code(500)
       .send({ message: 'Could not create user. Something went wrong' });
@@ -43,7 +39,6 @@ const removeUser = async (req, reply) => {
     const message = await userService.remove(req.params.userId);
     reply.code(200).send({ message });
   } catch (error) {
-    console.log(error.message);
     reply.code(500).send('Oops!');
   }
 };
@@ -56,7 +51,6 @@ const updateUser = async (req, reply) => {
       .header('Content-Type', 'application/json')
       .send(User.toResponse(updatedUser));
   } catch (error) {
-    console.log(error.message);
     reply.code(500).send('Oops!');
   }
 };

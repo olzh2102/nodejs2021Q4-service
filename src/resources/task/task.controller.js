@@ -5,7 +5,6 @@ const getTasks = async (req, reply) => {
     const tasks = await taskService.getAll(req.params.boardId);
     reply.code(200).header('Content-Type', 'application/json').send(tasks);
   } catch (error) {
-    console.log(error.message);
     reply.code(500).send('Oops!');
   }
 };
@@ -18,7 +17,6 @@ const getSingleTask = async (req, reply) => {
     );
     reply.code(200).header('Content-Type', 'application/json').send(task);
   } catch (error) {
-    console.log(error.message);
     reply.code(404).send({ Error: error.message });
   }
 };
@@ -28,7 +26,6 @@ const addTask = async (req, reply) => {
     const task = await taskService.create(req.params.boardId, req.body);
     reply.code(201).header('Content-Type', 'application/json').send(task);
   } catch (error) {
-    console.log(error.message);
     reply.code(500).send('Oops!');
   }
 };
@@ -41,7 +38,6 @@ const updateTask = async (req, reply) => {
       .header('Content-Type', 'application/json')
       .send(updatedTask);
   } catch (error) {
-    console.log(error.message);
     reply.code(500).send('Oops!');
   }
 };
@@ -54,7 +50,6 @@ const removeTask = async (req, reply) => {
     );
     reply.code(200).send({ message });
   } catch (error) {
-    console.log(error.message);
     reply.code(404).send({ error: error.message });
   }
 };
