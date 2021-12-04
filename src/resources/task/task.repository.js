@@ -45,10 +45,10 @@ const remove = async (boardId, taskId) =>
     reject(new Error('Could not find requested board!'));
   });
 
-const insert = async (updatedTasks) =>
+const removeAllBy = async (boardId) =>
   new Promise((resolve) => {
-    tasks = updatedTasks;
-    resolve();
+    tasks = tasks.filter((t) => t.boardId !== boardId);
+    resolve(`All tasks for board id ${boardId} are deleted`);
   });
 
 module.exports = {
@@ -57,5 +57,5 @@ module.exports = {
   create,
   remove,
   update,
-  insert,
+  removeAllBy,
 };
