@@ -5,7 +5,7 @@ const app = build({ logger: true });
 
 app.listen(PORT, (err) => {
   if (err) {
-    console.log(err);
+    app.log.error(err);
     process.exit(1);
   }
 });

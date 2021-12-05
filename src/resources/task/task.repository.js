@@ -10,13 +10,12 @@ const getAll = (boardId) =>
 
 const getById = (boardId, taskId) =>
   new Promise((resolve, reject) => {
-    if (boardId) {
-      const task = tasks.find((t) => t.id === taskId);
-      if (!task) reject(new Error('Could not find requested board!'));
-      resolve(task);
-    } else {
-      reject(new Error('Could find task by board id'));
-    }
+    const task = tasks.find((t) => t.id === taskId && t.boardId === boardId);
+
+    if (!task)
+      reject(new Error(`Could not find requested task with id ${taskId}`));
+
+    resolve(task);
   });
 
 const create = (boardId, task) =>

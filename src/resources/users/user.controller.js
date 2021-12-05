@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 const userService = require('./user.service');
 const User = require('./user.model');
 
