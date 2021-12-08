@@ -1,6 +1,6 @@
 const taskController = require('./task.controller');
 
-function router(fastify, options, done) {
+function router(fastify: any, options: any, done: any) {
   fastify.get('/tasks', taskController.getTasks);
   fastify.post('/tasks', taskController.addTask);
   fastify.get('/tasks/:taskId', taskController.getSingleTask);

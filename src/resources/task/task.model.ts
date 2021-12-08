@@ -1,6 +1,14 @@
 const uuid = require('uuid');
 
 class Task {
+  id: any;
+  title: any;
+  order: any;
+  description: any;
+  userId: any;
+  columnId: any;
+  boardId: any;
+
   constructor({
     id = uuid.v4(),
     title = 'TASK',
@@ -20,7 +28,7 @@ class Task {
     this.boardId = boardId;
   }
 
-  static toResponse(task) {
+  static toResponse(task: any) {
     const { id, title, order, description, userId } = task;
     return { id, title, order, description, userId };
   }

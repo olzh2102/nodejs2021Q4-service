@@ -1,7 +1,12 @@
+import { FastifyRequest, FastifyReply } from 'fastify';
+
 const boardService = require('./board.service');
 const Board = require('./board.model');
 
-const getBoards = async (req, reply) => {
+const getBoards = async (
+  req: FastifyRequest,
+  reply: FastifyReply
+): Promise<any> => {
   try {
     const boards = await boardService.getAll();
     reply.code(200).header('Content-Type', 'application/json').send(boards);
@@ -10,16 +15,22 @@ const getBoards = async (req, reply) => {
   }
 };
 
-const getSingleBoard = async (req, reply) => {
+const getSingleBoard = async (
+  req: FastifyRequest<any>,
+  reply: FastifyReply
+): Promise<any> => {
   try {
     const board = await boardService.getById(req.params.boardId);
     reply.code(200).header('Content-Type', 'application/json').send(board);
-  } catch (error) {
+  } catch (error: any) {
     reply.code(404).send({ Error: error.message });
   }
 };
 
-const addBoard = async (req, reply) => {
+const addBoard = async (
+  req: FastifyRequest<any>,
+  reply: FastifyReply
+): Promise<any> => {
   const board = new Board(req.body);
 
   try {
@@ -33,7 +44,10 @@ const addBoard = async (req, reply) => {
   }
 };
 
-const updateBoard = async (req, reply) => {
+const updateBoard = async (
+  req: FastifyRequest<any>,
+  reply: FastifyReply
+): Promise<any> => {
   try {
     const updatedBoard = await boardService.update(
       req.params.boardId,
@@ -48,7 +62,10 @@ const updateBoard = async (req, reply) => {
   }
 };
 
-const removeBoard = async (req, reply) => {
+const removeBoard = async (
+  req: FastifyRequest<any>,
+  reply: FastifyReply
+): Promise<any> => {
   try {
     const message = await boardService.remove(req.params.boardId);
     reply.code(200).send({ message });

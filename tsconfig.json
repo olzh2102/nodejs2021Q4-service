@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "noImplicitAny": false,
+    "strict": true,
+    "downlevelIteration": true,
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "exclude": ["node_modules"]
+}

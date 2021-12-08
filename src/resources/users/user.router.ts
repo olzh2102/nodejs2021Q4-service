@@ -1,6 +1,6 @@
 const userController = require('./user.controller');
 
-function router(fastify, options, done) {
+function router(fastify: any, options: any, done: any) {
   fastify.get('/users', userController.getUsers);
   fastify.get('/users/:userId', userController.getSingleUser);
   fastify.post('/users', userController.addUser);

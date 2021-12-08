@@ -1,7 +1,7 @@
 const userService = require('./user.service');
 const User = require('./user.model');
 
-const getUsers = async (req, reply) => {
+const getUsers = async (req: any, reply: any) => {
   try {
     const users = await userService.getAll();
     reply.code(200).header('Content-Type', 'application/json').send(users);
@@ -10,7 +10,7 @@ const getUsers = async (req, reply) => {
   }
 };
 
-const getSingleUser = async (req, reply) => {
+const getSingleUser = async (req: any, reply: any) => {
   try {
     const user = await userService.getById(req.params.userId);
     reply
@@ -22,7 +22,7 @@ const getSingleUser = async (req, reply) => {
   }
 };
 
-const addUser = async (req, reply) => {
+const addUser = async (req: any, reply: any) => {
   try {
     const newUser = await userService.create(req.body);
     reply.code(201).header('Content-Type', 'application/json').send(newUser);
@@ -33,7 +33,7 @@ const addUser = async (req, reply) => {
   }
 };
 
-const removeUser = async (req, reply) => {
+const removeUser = async (req: any, reply: any) => {
   try {
     const message = await userService.remove(req.params.userId);
     reply.code(200).send({ message });
@@ -42,7 +42,7 @@ const removeUser = async (req, reply) => {
   }
 };
 
-const updateUser = async (req, reply) => {
+const updateUser = async (req: any, reply: any) => {
   try {
     const updatedUser = await userService.update(req.params.userId, req.body);
     reply
