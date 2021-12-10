@@ -1,17 +1,17 @@
-import { FastifyInstance, FastifyPluginOptions, FastifyError } from 'fastify';
+import { FastifyInstance, FastifyPluginOptions } from 'fastify';
 
-const {
+import {
   getBoards,
   getSingleBoard,
   addBoard,
   removeBoard,
   updateBoard,
-} = require('./board.controller');
+} from './board.service';
 
 function router(
   fastify: FastifyInstance,
   options: FastifyPluginOptions,
-  done: (err?: FastifyError) => void
+  done: () => void
 ): void {
   fastify.get('/', getBoards);
   fastify.get('/:boardId', getSingleBoard);
@@ -22,4 +22,4 @@ function router(
   done();
 }
 
-module.exports = router;
+export default router;

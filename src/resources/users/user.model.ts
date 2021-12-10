@@ -1,8 +1,12 @@
 import { v4 as uuid } from 'uuid';
+
 export class User {
-  id: any;
+  id: string;
+
   login: string;
-  password: string;
+
+  password?: string;
+
   name: string;
 
   constructor({
@@ -17,7 +21,7 @@ export class User {
     this.password = password;
   }
 
-  static toResponse(user: any) {
+  static toResponse(user: User) {
     const { id, name, login } = user;
     return { id, name, login };
   }

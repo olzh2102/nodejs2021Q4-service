@@ -1,17 +1,17 @@
-const Task = require('./task.model');
+import { Task } from './task.model';
 
-let tasks: any = [];
+let tasks: Task[] = [];
 
-const getAll = (boardId: any) =>
+export const getAll = (boardId: string) =>
   new Promise((resolve, reject) => {
     if (boardId) resolve(tasks);
     reject(new Error('Could not find board to fetch tasks'));
   });
 
-const getById = (boardId: any, taskId: any) =>
+export const getById = (boardId: string, taskId: string) =>
   new Promise((resolve, reject) => {
     const task = tasks.find(
-      (t: any) => t.id === taskId && t.boardId === boardId
+      (t: Task) => t.id === taskId && t.boardId === boardId
     );
 
     if (!task)
@@ -20,44 +20,34 @@ const getById = (boardId: any, taskId: any) =>
     resolve(task);
   });
 
-const create = (boardId: any, task: any) =>
+export const create = (boardId: null, task: Task) =>
   new Promise((resolve) => {
     const newTask = new Task({ ...task, boardId });
     tasks = tasks.concat(newTask);
     resolve(newTask);
   });
 
-const update = async (id: any, fields: any) =>
+export const update = async (id: string, fields: Task) =>
   new Promise((resolve) => {
-    const task = { ...tasks.find((t: any) => t.id === id), ...fields };
-    tasks = tasks.map((t: any) => {
+    const task = { ...tasks.find((t: Task) => t.id === id), ...fields };
+    tasks = tasks.map((t: Task) => {
       if (t.id === id) return task;
       return t;
     });
     resolve(task);
   });
 
-const remove = async (boardId: any, taskId: any) =>
+export const remove = async (boardId: string, taskId: string) =>
   new Promise((resolve, reject) => {
     if (boardId) {
-      tasks = tasks.filter((t: any) => t.id !== taskId);
+      tasks = tasks.filter((t: Task) => t.id !== taskId);
       resolve('Task deleted successfully');
     }
     reject(new Error('Could not find requested board!'));
   });
 
-const removeAllBy = async (boardId: any) =>
+export const removeAllBy = async (boardId: string) =>
   new Promise((resolve) => {
-    tasks = tasks.filter((t: any) => t.boardId !== boardId);
+    tasks = tasks.filter((t: Task) => t.boardId !== boardId);
     resolve(`All tasks for board id ${boardId} are deleted`);
   });
-
-export {};
-module.exports = {
-  getAll,
-  getById,
-  create,
-  remove,
-  update,
-  removeAllBy,
-};

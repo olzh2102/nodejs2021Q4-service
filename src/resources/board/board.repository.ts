@@ -1,47 +1,38 @@
-const Board = require('./board.model');
+import { Board } from './board.model';
 
-let boards: any = [];
+let boards: Board[] = [];
 
-const getAll = () =>
+export const getAll = () =>
   new Promise((resolve) => {
     resolve(boards);
   });
 
-const getById = (id: any) =>
+export const getById = (id: string) =>
   new Promise((resolve, reject) => {
-    const board = boards.find((b: any) => b.id === id);
+    const board = boards.find((b: Board) => b.id === id);
     if (!board) reject(new Error('Could not find requested board!'));
     resolve(board);
   });
 
-const create = (board: any) =>
+export const create = (board: Board) =>
   new Promise((resolve) => {
     const newBoard = new Board(board);
     boards = boards.concat(newBoard);
     resolve(newBoard);
   });
 
-const update = async (id: any, fields: any) =>
+export const update = async (id: string, fields: Board) =>
   new Promise((resolve) => {
-    const board = { ...boards.find((b: any) => b.id === id), ...fields };
-    boards = boards.map((b: any) => {
+    const board = { ...boards.find((b: Board) => b.id === id), ...fields };
+    boards = boards.map((b: Board) => {
       if (b.id === id) return board;
       return b;
     });
     resolve(board);
   });
 
-const remove = async (id: any) =>
+export const remove = async (id: string) =>
   new Promise((resolve) => {
-    boards = boards.filter((b: any) => b.id !== id);
+    boards = boards.filter((b: Board) => b.id !== id);
     resolve('Board deleted successfully');
   });
-
-export {};
-module.exports = {
-  getAll,
-  getById,
-  create,
-  remove,
-  update,
-};

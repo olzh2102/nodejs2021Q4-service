@@ -1,33 +1,27 @@
-import * as db from '../../db';
+import { User } from './user.model';
 
-const User = require('./user.model');
+let users: User[] = [];
 
-let users: any = [];
-
-const getAllUsers = () =>
-  new Promise((resolve) => {
-    const users = db.getAll('users');
-    resolve(users.map(User.toResponse));
-  });
-
-const getUserById = (id: string) =>
-  new Promise((resolve) => {
-    const user = db.findOne('users')(id, 'userId');
-    resolve(User.toResponse(user));
-  });
-
+/**
+ * * Asynchronously returns list of user
+ * * @return { name, login, id }[]
+ */
 export const getAll = (): Promise<User[]> =>
   new Promise((resolve) => {
     resolve(users.map(User.toResponse));
   });
 
+/**
+ * * Asynchronously returns user by userId
+ * * @param id - uuid
+ */
 export const getById = (id: string): Promise<User> =>
   new Promise((resolve) => {
-    const user = users.find((u: any) => u.id === id);
-    resolve(User.toResponse(user));
+    const user = users.find((u: User) => u.id === id);
+    resolve(User.toResponse(user as User));
   });
 
-export const create = (user: Partial<User>): Promise<User> =>
+export const create = (user: User): Promise<User> =>
   new Promise((resolve) => {
     const newUser = new User(user);
     users = users.concat(newUser);
@@ -36,23 +30,23 @@ export const create = (user: Partial<User>): Promise<User> =>
 
 export const remove = async (id: string): Promise<string> =>
   new Promise((resolve) => {
-    users = users.filter((u: any) => u.id !== id);
+    users = users.filter((u: User) => u.id !== id);
     resolve(`User deleted successfully`);
   });
 
-export const update = async (id: string, fields: any): Promise<User> =>
+export const update = async (id: string, fields: User): Promise<User> =>
   new Promise((resolve) => {
     const user = { ...users.find((u: User) => u.id === id), ...fields };
-    users = users.map((u: any) => {
+    users = users.map((u: User) => {
       if (u.id === id) return user;
       return u;
     });
     resolve(user);
   });
 
-type User = {
-  id: string;
-  login: string;
-  name: string;
-  password?: string;
-};
+/**
+ * Asynchronously returns updated user
+ *
+ * @param id - string in uuidv4 format
+ * @param updatedUserData - user data with `id`, `name`, `login` and `password` fields
+ */

@@ -1,17 +1,17 @@
-import { FastifyInstance, FastifyPluginOptions, FastifyError } from 'fastify';
+import { FastifyInstance, FastifyPluginOptions } from 'fastify';
 
-const {
+import {
   getUsers,
   getSingleUser,
   addUser,
   removeUser,
   updateUser,
-} = require('./user.service');
+} from './user.service';
 
 function router(
   fastify: FastifyInstance,
   options: FastifyPluginOptions,
-  done: (err?: FastifyError) => void
+  done: () => void
 ): void {
   fastify.get('/', getUsers);
   fastify.get('/:userId', getSingleUser);
@@ -22,4 +22,4 @@ function router(
   done();
 }
 
-module.exports = router;
+export default router;

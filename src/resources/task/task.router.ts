@@ -1,17 +1,17 @@
-import { FastifyInstance, FastifyPluginOptions, FastifyError } from 'fastify';
+import { FastifyInstance, FastifyPluginOptions } from 'fastify';
 
-const {
+import {
   getTasks,
   getSingleTask,
   addTask,
   removeTask,
   updateTask,
-} = require('./task.controller');
+} from './task.service';
 
 function router(
   fastify: FastifyInstance,
   options: FastifyPluginOptions,
-  done: (err?: FastifyError) => void
+  done: () => void
 ): void {
   fastify.get('/', getTasks);
   fastify.post('/', addTask);
@@ -22,4 +22,4 @@ function router(
   done();
 }
 
-module.exports = router;
+export default router;

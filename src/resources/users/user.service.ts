@@ -1,78 +1,111 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 
 import * as userRepo from './user.repository';
-import { HTTP_STATUS, CONTENT_TYPE } from '../../common/constants';
 import { User } from './user.model';
 
-const getUsers = async (req: FastifyRequest, reply: FastifyReply) => {
+type RequestUser = { Params: { userId: string }; Body: User };
+type RequestType = FastifyRequest<RequestUser>;
+
+/**
+ * * @GET: list of User[]
+ * * { id, login, name }
+ *
+ * * @param req - fastify request
+ * * @param reply - fastify server reply
+ */
+export const getUsers = async (
+  req: FastifyRequest,
+  reply: FastifyReply
+): Promise<void> => {
   try {
     const users = await userRepo.getAll();
 
-    reply
-      .code(HTTP_STATUS.OK)
-      .header('Content-Type', CONTENT_TYPE.JSON)
-      .send(users);
+    reply.code(200).header('Content-Type', 'application/json').send(users);
   } catch (e) {
-    reply.code(HTTP_STATUS.INTERNAL_ERR).send('Oops!');
+    reply.code(500).send('Oops!');
   }
 };
 
-const getSingleUser = async (
-  req: FastifyRequest<{ Params: { userId: string } }>,
+/**
+ * * @GET: single User by userId
+ * * { id, login, name }
+ *
+ * * @param req - fastify request
+ * * @param reply - fastify server reply
+ */
+export const getSingleUser = async (
+  req: RequestType,
   reply: FastifyReply
-) => {
+): Promise<void> => {
   const { userId } = req.params;
 
   try {
     const user = await userRepo.getById(userId);
 
     reply
-      .code(HTTP_STATUS.OK)
-      .header('Content-Type', CONTENT_TYPE.JSON)
+      .code(200)
+      .header('Content-Type', 'application/json')
       .send(User.toResponse(user));
   } catch (e) {
-    reply.code(HTTP_STATUS.INTERNAL_ERR).send('Oops!');
+    reply.code(500).send('Oops!');
   }
 };
 
-const addUser = async (
-  req: FastifyRequest<{
-    Body: Partial<User>;
-  }>,
+/**
+ * * @POST: single User
+ * * { login, name, password }
+ *
+ * * @param req - fastify request <Body: User>
+ * * @param reply - fastify server reply
+ */
+export const addUser = async (
+  req: RequestType,
   reply: FastifyReply
-) => {
+): Promise<void> => {
   const newUser = req.body;
+
   try {
     const user = await userRepo.create(newUser);
 
-    reply
-      .code(HTTP_STATUS.CREATED)
-      .header('Content-Type', CONTENT_TYPE.JSON)
-      .send(user);
+    reply.code(201).header('Content-Type', 'application/json').send(user);
   } catch (e) {
-    reply.code(HTTP_STATUS.INTERNAL_ERR).send('Oops!');
+    reply.code(500).send('Oops!');
   }
 };
 
-const removeUser = async (
-  req: FastifyRequest<{ Params: { userId: string } }>,
+/**
+ * * @DELETE: single User by userId
+ * * { login, name, password }
+ *
+ * * @param req - fastify request <Param: userId>
+ * * @param reply - fastify server reply
+ */
+export const removeUser = async (
+  req: RequestType,
   reply: FastifyReply
-) => {
+): Promise<void> => {
   const { userId } = req.params;
 
   try {
     const message = await userRepo.remove(userId);
 
-    reply.code(HTTP_STATUS.OK).send({ message });
+    reply.code(200).send({ message });
   } catch (error) {
-    reply.code(HTTP_STATUS.INTERNAL_ERR).send('Oops!');
+    reply.code(500).send('Oops!');
   }
 };
 
-const updateUser = async (
-  req: FastifyRequest<{ Params: { userId: string }; Body: Partial<User> }>,
+/**
+ * * PUT: updating existing User
+ * * { login, name }
+ *
+ * * @param req - http request: { body: User, param: userId }
+ * * @param reply - fastify server reply
+ */
+export const updateUser = async (
+  req: RequestType,
   reply: FastifyReply
-) => {
+): Promise<void> => {
   const fields = req.body;
   const { userId } = req.params;
 
@@ -80,18 +113,10 @@ const updateUser = async (
     const updatedUser = await userRepo.update(userId, fields);
 
     reply
-      .code(HTTP_STATUS.OK)
-      .header('Content-Type', CONTENT_TYPE.JSON)
+      .code(200)
+      .header('Content-Type', 'application/json')
       .send(User.toResponse(updatedUser));
   } catch (error) {
-    reply.code(HTTP_STATUS.INTERNAL_ERR).send('Oops!');
+    reply.code(500).send('Oops!');
   }
-};
-
-module.exports = {
-  getUsers,
-  getSingleUser,
-  addUser,
-  removeUser,
-  updateUser,
 };

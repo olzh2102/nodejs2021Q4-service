@@ -1,13 +1,12 @@
-import { FastifyInstance, FastifyPluginOptions } from 'fastify';
+import { fastify, FastifyInstance, FastifyPluginOptions } from 'fastify';
 import { Server, IncomingMessage, ServerResponse } from 'http';
 
-const path = require('path');
-const fastify = require('fastify');
-const swaggerUI = require('fastify-swagger');
+import path from 'path';
 
-const userRoutes = require('./resources/users/user.router');
-const boardRoutes = require('./resources/board/board.router');
-const taskRoutes = require('./resources/task/task.router');
+import swaggerUI from 'fastify-swagger';
+import userRoutes from './resources/users/user.router';
+import taskRoutes from './resources/task/task.router';
+import boardRoutes from './resources/board/board.router';
 
 const build = (
   options: FastifyPluginOptions = {}
@@ -21,6 +20,7 @@ const build = (
     mode: 'static',
     specification: {
       path: path.join(__dirname, '../doc/api.yaml'),
+      baseDir: __dirname,
     },
   });
 

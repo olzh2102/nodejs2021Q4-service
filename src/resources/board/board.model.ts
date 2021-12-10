@@ -1,24 +1,23 @@
-const uuid = require('uuid');
+import { v4 as uuid } from 'uuid';
 
-class Board {
+export class Board {
   title: string;
-  id: any;
-  columns: { id: any; title: string; order: number }[];
+
+  id: string;
+
+  columns: { id: string; title: string; order: number }[];
 
   constructor({
-    id = uuid.v4(),
+    id = uuid(),
     title = 'BOARD',
-    columns = [{ id: uuid.v4(), title: 'COLUMN', order: 0 }],
+    columns = [{ id: uuid(), title: 'COLUMN', order: 0 }],
   } = {}) {
     this.id = id;
     this.title = title;
-    this.columns = columns.map((c) => ({ ...c, id: uuid.v4() }));
+    this.columns = columns.map((c) => ({ ...c, id: uuid() }));
   }
 
-  static toResponse(board: any) {
+  static toResponse(board: Board) {
     return board;
   }
 }
-
-export {};
-module.exports = Board;
