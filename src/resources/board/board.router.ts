@@ -12,7 +12,7 @@ function router(
   fastify: FastifyInstance,
   options: FastifyPluginOptions,
   done: (err?: FastifyError) => void
-) {
+): void {
   fastify.get('/', getBoards);
   fastify.get('/:boardId', getSingleBoard);
   fastify.post('/', addBoard);
@@ -22,5 +22,4 @@ function router(
   done();
 }
 
-export {};
 module.exports = router;

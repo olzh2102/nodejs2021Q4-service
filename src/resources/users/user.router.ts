@@ -1,11 +1,23 @@
-const userController = require('./user.controller');
+import { FastifyInstance, FastifyPluginOptions, FastifyError } from 'fastify';
 
-function router(fastify: any, options: any, done: any) {
-  fastify.get('/users', userController.getUsers);
-  fastify.get('/users/:userId', userController.getSingleUser);
-  fastify.post('/users', userController.addUser);
-  fastify.delete('/users/:userId', userController.removeUser);
-  fastify.put('/users/:userId', userController.updateUser);
+const {
+  getUsers,
+  getSingleUser,
+  addUser,
+  removeUser,
+  updateUser,
+} = require('./user.service');
+
+function router(
+  fastify: FastifyInstance,
+  options: FastifyPluginOptions,
+  done: (err?: FastifyError) => void
+): void {
+  fastify.get('/', getUsers);
+  fastify.get('/:userId', getSingleUser);
+  fastify.post('/', addUser);
+  fastify.delete('/:userId', removeUser);
+  fastify.put('/:userId', updateUser);
 
   done();
 }

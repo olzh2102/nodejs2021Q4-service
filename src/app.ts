@@ -12,7 +12,8 @@ const taskRoutes = require('./resources/task/task.router');
 const build = (
   options: FastifyPluginOptions = {}
 ): FastifyInstance<Server, IncomingMessage, ServerResponse> => {
-  const app = fastify(options);
+  const app: FastifyInstance<Server, IncomingMessage, ServerResponse> =
+    fastify(options);
 
   app.register(swaggerUI, {
     exposeRoute: true,
@@ -23,15 +24,11 @@ const build = (
     },
   });
 
-  app.register(userRoutes);
+  app.register(userRoutes, { prefix: '/users' });
   app.register(boardRoutes, { prefix: '/boards' });
-  app.register(taskRoutes, { prefix: '/boards/:boardId' });
+  app.register(taskRoutes, { prefix: '/boards/:boardId/tasks' });
 
   return app;
 };
 
-export {};
-
-module.exports = {
-  build,
-};
+export default build;

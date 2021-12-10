@@ -1,11 +1,23 @@
-const taskController = require('./task.controller');
+import { FastifyInstance, FastifyPluginOptions, FastifyError } from 'fastify';
 
-function router(fastify: any, options: any, done: any) {
-  fastify.get('/tasks', taskController.getTasks);
-  fastify.post('/tasks', taskController.addTask);
-  fastify.get('/tasks/:taskId', taskController.getSingleTask);
-  fastify.delete('/tasks/:taskId', taskController.removeTask);
-  fastify.put('/tasks/:taskId', taskController.updateTask);
+const {
+  getTasks,
+  getSingleTask,
+  addTask,
+  removeTask,
+  updateTask,
+} = require('./task.controller');
+
+function router(
+  fastify: FastifyInstance,
+  options: FastifyPluginOptions,
+  done: (err?: FastifyError) => void
+): void {
+  fastify.get('/', getTasks);
+  fastify.post('/', addTask);
+  fastify.get('/:taskId', getSingleTask);
+  fastify.delete('/:taskId', removeTask);
+  fastify.put('/:taskId', updateTask);
 
   done();
 }

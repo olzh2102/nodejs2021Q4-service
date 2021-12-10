@@ -3,7 +3,7 @@
     "target": "ES6",
     "moduleResolution": "node",
     "allowJs": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "strict": true,
     "downlevelIteration": true,
     "rootDir": "src",

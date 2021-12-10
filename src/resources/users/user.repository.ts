@@ -1,34 +1,48 @@
+import * as db from '../../db';
+
 const User = require('./user.model');
 
 let users: any = [];
 
-const getAll = () =>
+const getAllUsers = () =>
+  new Promise((resolve) => {
+    const users = db.getAll('users');
+    resolve(users.map(User.toResponse));
+  });
+
+const getUserById = (id: string) =>
+  new Promise((resolve) => {
+    const user = db.findOne('users')(id, 'userId');
+    resolve(User.toResponse(user));
+  });
+
+export const getAll = (): Promise<User[]> =>
   new Promise((resolve) => {
     resolve(users.map(User.toResponse));
   });
 
-const getById = (id: any) =>
+export const getById = (id: string): Promise<User> =>
   new Promise((resolve) => {
     const user = users.find((u: any) => u.id === id);
     resolve(User.toResponse(user));
   });
 
-const create = (user: any) =>
+export const create = (user: Partial<User>): Promise<User> =>
   new Promise((resolve) => {
     const newUser = new User(user);
     users = users.concat(newUser);
     resolve(User.toResponse(newUser));
   });
 
-const remove = async (id: any) =>
+export const remove = async (id: string): Promise<string> =>
   new Promise((resolve) => {
     users = users.filter((u: any) => u.id !== id);
     resolve(`User deleted successfully`);
   });
 
-const update = async (id: any, fields: any) =>
+export const update = async (id: string, fields: any): Promise<User> =>
   new Promise((resolve) => {
-    const user = { ...users.find((u: any) => u.id === id), ...fields };
+    const user = { ...users.find((u: User) => u.id === id), ...fields };
     users = users.map((u: any) => {
       if (u.id === id) return user;
       return u;
@@ -36,11 +50,9 @@ const update = async (id: any, fields: any) =>
     resolve(user);
   });
 
-export {};
-module.exports = {
-  getAll,
-  getById,
-  create,
-  remove,
-  update,
+type User = {
+  id: string;
+  login: string;
+  name: string;
+  password?: string;
 };
