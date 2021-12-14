@@ -3,6 +3,11 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 import * as taskRepo from './task.repository';
 import { Task } from './task.model';
 
+/**
+ * GET: retrieves list of tasks
+ * @param req - instance of http request
+ * @param reply - instance of http replies
+ */
 export const getTasks = async (
   req: FastifyRequest<{ Params: { boardId: string } }>,
   reply: FastifyReply
@@ -15,6 +20,11 @@ export const getTasks = async (
   }
 };
 
+/**
+ * GET: retrieves task by its id
+ * @param req - instance of http request
+ * @param reply - instance of http replies
+ */
 export const getSingleTask = async (
   req: FastifyRequest<{ Params: { boardId: string; taskId: string } }>,
   reply: FastifyReply
@@ -27,6 +37,11 @@ export const getSingleTask = async (
   }
 };
 
+/**
+ * POST: creates new task
+ * @param req - instance of http request
+ * @param reply - instance of http replies
+ */
 export const addTask = async (
   req: FastifyRequest<{ Params: { boardId: null }; Body: Task }>,
   reply: FastifyReply
@@ -39,12 +54,21 @@ export const addTask = async (
   }
 };
 
+/**
+ * PUT: updates existing task by its id and its boardId
+ * @param req - instance of http request
+ * @param reply - instance of http replies
+ */
 export const updateTask = async (
-  req: FastifyRequest<{ Params: { taskId: string }; Body: Task }>,
+  req: FastifyRequest<{
+    Params: { taskId: string; boardId: string };
+    Body: Task;
+  }>,
   reply: FastifyReply
 ) => {
+  const { taskId, boardId } = req.params;
   try {
-    const updatedTask = await taskRepo.update(req.params.taskId, req.body);
+    const updatedTask = await taskRepo.update(boardId, taskId, req.body);
     reply
       .code(200)
       .header('Content-Type', 'application/json')
@@ -54,6 +78,11 @@ export const updateTask = async (
   }
 };
 
+/**
+ * DELETE: removes task by its id and its boardId
+ * @param req - instance of http request
+ * @param reply - instance of http replies
+ */
 export const removeTask = async (
   req: FastifyRequest<{ Params: { boardId: string; taskId: string } }>,
   reply: FastifyReply

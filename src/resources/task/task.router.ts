@@ -8,6 +8,12 @@ import {
   updateTask,
 } from './task.service';
 
+/**
+ * creates routes REST endpoint for task resource
+ * @param fastify - fastify server instance
+ * @param options - fastify options
+ * @param done - callback function to call after registering all routes to continue
+ */
 function router(
   fastify: FastifyInstance,
   options: FastifyPluginOptions,
