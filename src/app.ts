@@ -1,12 +1,16 @@
-import { fastify, FastifyInstance, FastifyPluginOptions } from 'fastify';
-import { Server, IncomingMessage, ServerResponse } from 'http';
-
 import path from 'path';
-
+import { Server, IncomingMessage, ServerResponse } from 'http';
+import { fastify, FastifyInstance, FastifyPluginOptions } from 'fastify';
 import swaggerUI from 'fastify-swagger';
+
 import userRoutes from './resources/users/user.router';
 import taskRoutes from './resources/task/task.router';
 import boardRoutes from './resources/board/board.router';
+
+/**
+ * @param options - fastify plugin options
+ * @returns fastify instance
+ * */
 
 const build = (
   options: FastifyPluginOptions = {}

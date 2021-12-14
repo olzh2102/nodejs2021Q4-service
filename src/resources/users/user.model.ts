@@ -1,11 +1,19 @@
 import { v4 as uuid } from 'uuid';
 
-export class User {
+export type UserResponse = {
   id: string;
+  name: string;
+  login: string;
+};
+
+export type UserType = UserResponse & { password: string };
+
+export class User implements UserType {
+  readonly id: string;
 
   login: string;
 
-  password?: string;
+  password: string;
 
   name: string;
 
@@ -20,6 +28,11 @@ export class User {
     this.login = login;
     this.password = password;
   }
+
+  /**
+   * @param user - instance of User class
+   * @returns fields of user except password
+   */
 
   static toResponse(user: User) {
     const { id, name, login } = user;

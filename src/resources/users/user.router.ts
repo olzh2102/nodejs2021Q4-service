@@ -8,6 +8,14 @@ import {
   updateUser,
 } from './user.service';
 
+/**
+ * creates routes REST endpoint for users resources
+ *
+ * @param fastify - fastify server instance
+ * @param options - fastify options
+ * @param done - callback function to call after registering all routes to continue
+ */
+
 function router(
   fastify: FastifyInstance,
   options: FastifyPluginOptions,

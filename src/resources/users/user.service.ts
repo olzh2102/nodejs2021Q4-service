@@ -1,17 +1,16 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 
 import * as userRepo from './user.repository';
-import { User } from './user.model';
+import { User, UserResponse } from './user.model';
 
 type RequestUser = { Params: { userId: string }; Body: User };
 type RequestType = FastifyRequest<RequestUser>;
 
 /**
- * * @GET: list of User[]
- * * { id, login, name }
+ * GET: retrieves list of users
  *
- * * @param req - fastify request
- * * @param reply - fastify server reply
+ * @param req - instance of http request
+ * @param reply - instance of http replies
  */
 export const getUsers = async (
   req: FastifyRequest,
@@ -27,11 +26,10 @@ export const getUsers = async (
 };
 
 /**
- * * @GET: single User by userId
- * * { id, login, name }
+ * GET: retrieves user by its id
  *
- * * @param req - fastify request
- * * @param reply - fastify server reply
+ * @param req - instance of http request
+ * @param reply - instance of http replies
  */
 export const getSingleUser = async (
   req: RequestType,
@@ -40,23 +38,22 @@ export const getSingleUser = async (
   const { userId } = req.params;
 
   try {
-    const user = await userRepo.getById(userId);
+    const user: UserResponse = await userRepo.getById(userId);
 
     reply
       .code(200)
       .header('Content-Type', 'application/json')
-      .send(User.toResponse(user));
+      .send(User.toResponse(user as User));
   } catch (e) {
     reply.code(500).send('Oops!');
   }
 };
 
 /**
- * * @POST: single User
- * * { login, name, password }
+ * POST: creates new user
  *
- * * @param req - fastify request <Body: User>
- * * @param reply - fastify server reply
+ * @param req - instance of http request
+ * @param reply - instance of http replies
  */
 export const addUser = async (
   req: RequestType,
@@ -74,11 +71,10 @@ export const addUser = async (
 };
 
 /**
- * * @DELETE: single User by userId
- * * { login, name, password }
+ * DELETE: removes user by its id
  *
- * * @param req - fastify request <Param: userId>
- * * @param reply - fastify server reply
+ * @param req - instance of http request
+ * @param reply - instance of http replies
  */
 export const removeUser = async (
   req: RequestType,
@@ -96,11 +92,10 @@ export const removeUser = async (
 };
 
 /**
- * * PUT: updating existing User
- * * { login, name }
+ * PUT: updates existing user by its id
  *
- * * @param req - http request: { body: User, param: userId }
- * * @param reply - fastify server reply
+ * @param req - instance of http request
+ * @param reply - instance of http replies
  */
 export const updateUser = async (
   req: RequestType,
