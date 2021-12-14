@@ -30,8 +30,10 @@ export const getSingleBoard = async (
   req: FastifyRequest<{ Params: { boardId: string } }>,
   reply: FastifyReply
 ): Promise<void> => {
+  const { boardId } = req.params;
+
   try {
-    const board = await boardRepo.getById(req.params.boardId);
+    const board = await boardRepo.getById(boardId);
     reply.code(200).header('Content-Type', 'application/json').send(board);
   } catch (error) {
     reply.code(404).send({ message: 'Not found!' });
@@ -69,8 +71,10 @@ export const updateBoard = async (
   req: FastifyRequest<{ Params: { boardId: string }; Body: Board }>,
   reply: FastifyReply
 ): Promise<void> => {
+  const { boardId } = req.params;
+
   try {
-    const updatedBoard = await boardRepo.update(req.params.boardId, req.body);
+    const updatedBoard = await boardRepo.update(boardId, req.body);
     reply
       .code(200)
       .header('Content-Type', 'application/json')
@@ -89,9 +93,11 @@ export const removeBoard = async (
   req: FastifyRequest<{ Params: { boardId: string } }>,
   reply: FastifyReply
 ): Promise<void> => {
+  const { boardId } = req.params;
+
   try {
-    const message = await boardRepo.remove(req.params.boardId);
-    await taskRepo.removeAllBy(req.params.boardId);
+    const message = await boardRepo.remove(boardId);
+    await taskRepo.removeAllBy(boardId);
 
     reply.code(200).send({ message });
   } catch (error) {

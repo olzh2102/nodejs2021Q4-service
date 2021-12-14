@@ -6,7 +6,7 @@ let tasks: Task[] = [];
  * @param boardId - uuid type
  * @returns promise to resolve list of tasks by boardId
  */
-export const getAll = (boardId: string) =>
+export const getAll = (boardId: string): Promise<Task[]> =>
   new Promise((resolve, reject) => {
     if (boardId) resolve(tasks);
     reject(new Error('Could not find board to fetch tasks'));
@@ -17,7 +17,7 @@ export const getAll = (boardId: string) =>
  * @param taskId - uuid type
  * @returns promise to resolve single task by its id and its boardId
  */
-export const getById = (boardId: string, taskId: string) =>
+export const getById = (boardId: string, taskId: string): Promise<Task> =>
   new Promise((resolve, reject) => {
     const task = tasks.find(
       (t: Task) => t.id === taskId && t.boardId === boardId
@@ -25,8 +25,7 @@ export const getById = (boardId: string, taskId: string) =>
 
     if (!task)
       reject(new Error(`Could not find requested task with id ${taskId}`));
-
-    resolve(task);
+    else resolve(task);
   });
 
 /**
@@ -34,7 +33,7 @@ export const getById = (boardId: string, taskId: string) =>
  * @param task - Object { id, title, columns }
  * @returns promise to resolve newly created task
  */
-export const create = (boardId: null, task: Task) =>
+export const create = (boardId: null, task: Task): Promise<Task> =>
   new Promise((resolve) => {
     const newTask = new Task({ ...task, boardId });
     tasks = tasks.concat(newTask);
