@@ -8,7 +8,6 @@ type RequestType = FastifyRequest<RequestUser>;
 
 /**
  * GET: retrieves list of users
- *
  * @param req - instance of http request
  * @param reply - instance of http replies
  */
@@ -27,7 +26,6 @@ export const getUsers = async (
 
 /**
  * GET: retrieves user by its id
- *
  * @param req - instance of http request
  * @param reply - instance of http replies
  */
@@ -51,7 +49,6 @@ export const getSingleUser = async (
 
 /**
  * POST: creates new user
- *
  * @param req - instance of http request
  * @param reply - instance of http replies
  */
@@ -72,7 +69,6 @@ export const addUser = async (
 
 /**
  * DELETE: removes user by its id
- *
  * @param req - instance of http request
  * @param reply - instance of http replies
  */
@@ -93,7 +89,6 @@ export const removeUser = async (
 
 /**
  * PUT: updates existing user by its id
- *
  * @param req - instance of http request
  * @param reply - instance of http replies
  */

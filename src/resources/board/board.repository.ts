@@ -2,11 +2,18 @@ import { Board } from './board.model';
 
 let boards: Board[] = [];
 
+/**
+ * @returns promise to resolve list of board
+ */
 export const getAll = () =>
   new Promise((resolve) => {
     resolve(boards);
   });
 
+/**
+ * @param id - uuid type
+ * @returns promise to resolve single board by its id
+ */
 export const getById = (id: string) =>
   new Promise((resolve, reject) => {
     const board = boards.find((b: Board) => b.id === id);
@@ -14,6 +21,10 @@ export const getById = (id: string) =>
     resolve(board);
   });
 
+/**
+ * @param board - Object { id, title, columns }
+ * @returns promise to resolve newly created board
+ */
 export const create = (board: Board) =>
   new Promise((resolve) => {
     const newBoard = new Board(board);
@@ -21,6 +32,11 @@ export const create = (board: Board) =>
     resolve(newBoard);
   });
 
+/**
+ * @param id - uuid type
+ * @param fields - can be any of { title, columns }
+ * @returns promise to resolve with updated board
+ */
 export const update = async (id: string, fields: Board) =>
   new Promise((resolve) => {
     const board = { ...boards.find((b: Board) => b.id === id), ...fields };
@@ -31,6 +47,10 @@ export const update = async (id: string, fields: Board) =>
     resolve(board);
   });
 
+/**
+ * @param id - uuid type
+ * @returns promise to resolve a message with successful deleted board
+ */
 export const remove = async (id: string) =>
   new Promise((resolve) => {
     boards = boards.filter((b: Board) => b.id !== id);

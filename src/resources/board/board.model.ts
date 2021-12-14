@@ -1,9 +1,9 @@
 import { v4 as uuid } from 'uuid';
 
 export class Board {
-  title: string;
+  readonly id: string;
 
-  id: string;
+  title: string;
 
   columns: { id: string; title: string; order: number }[];
 

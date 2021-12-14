@@ -32,7 +32,6 @@ export const create = (user: User): Promise<UserResponse> =>
   });
 
 /**
- *
  * @param id - uuid type
  * @returns promise to resolve a message with successful deleted user
  */
@@ -43,7 +42,6 @@ export const remove = async (id: string): Promise<string> =>
   });
 
 /**
- *
  * @param id - uuid type
  * @param fields - can be any of { name, login, password }
  * @returns promise to resolve with updated user

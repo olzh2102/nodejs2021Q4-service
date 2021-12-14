@@ -4,6 +4,11 @@ import * as boardRepo from './board.repository';
 import * as taskRepo from '../task/task.repository';
 import { Board } from './board.model';
 
+/**
+ * GET: retrieves list of boards
+ * @param req - instance of http request
+ * @param reply - instance of http replies
+ */
 export const getBoards = async (
   req: FastifyRequest,
   reply: FastifyReply
@@ -16,6 +21,11 @@ export const getBoards = async (
   }
 };
 
+/**
+ * GET: retrieves board by its id
+ * @param req - instance of http request
+ * @param reply - instance of http replies
+ */
 export const getSingleBoard = async (
   req: FastifyRequest<{ Params: { boardId: string } }>,
   reply: FastifyReply
@@ -28,6 +38,11 @@ export const getSingleBoard = async (
   }
 };
 
+/**
+ * POST: creates new board
+ * @param req - instance of http request
+ * @param reply - instance of http replies
+ */
 export const addBoard = async (
   req: FastifyRequest<{ Body: Board }>,
   reply: FastifyReply
@@ -45,6 +60,11 @@ export const addBoard = async (
   }
 };
 
+/**
+ * PUT: updates existing board by its id
+ * @param req - instance of http request
+ * @param reply - instance of http replies
+ */
 export const updateBoard = async (
   req: FastifyRequest<{ Params: { boardId: string }; Body: Board }>,
   reply: FastifyReply
@@ -60,6 +80,11 @@ export const updateBoard = async (
   }
 };
 
+/**
+ * DELETE: removes board by its id and its related tasks
+ * @param req - instance of http request
+ * @param reply - instance of http replies
+ */
 export const removeBoard = async (
   req: FastifyRequest<{ Params: { boardId: string } }>,
   reply: FastifyReply
