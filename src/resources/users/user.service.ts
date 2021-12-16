@@ -2,6 +2,7 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 
 import * as userRepo from './user.repository';
 import { User, UserResponse } from './user.model';
+import { getErrorMessage } from '../../common/utils';
 
 type RequestUser = { Params: { userId: string }; Body: User };
 type RequestType = FastifyRequest<RequestUser>;
@@ -20,7 +21,7 @@ export const getUsers = async (
 
     reply.code(200).header('Content-Type', 'application/json').send(users);
   } catch (e) {
-    reply.code(500).send('Oops!');
+    reply.code(500).send({ message: getErrorMessage(e) });
   }
 };
 
@@ -43,7 +44,7 @@ export const getSingleUser = async (
       .header('Content-Type', 'application/json')
       .send(User.toResponse(user as User));
   } catch (e) {
-    reply.code(500).send('Oops!');
+    reply.code(500).send({ message: getErrorMessage(e) });
   }
 };
 
@@ -63,7 +64,7 @@ export const addUser = async (
 
     reply.code(201).header('Content-Type', 'application/json').send(user);
   } catch (e) {
-    reply.code(500).send('Oops!');
+    reply.code(500).send({ message: getErrorMessage(e) });
   }
 };
 
@@ -82,8 +83,8 @@ export const removeUser = async (
     const message = await userRepo.remove(userId);
 
     reply.code(200).send({ message });
-  } catch (error) {
-    reply.code(500).send('Oops!');
+  } catch (e) {
+    reply.code(500).send({ message: getErrorMessage(e) });
   }
 };
 
@@ -106,7 +107,7 @@ export const updateUser = async (
       .code(200)
       .header('Content-Type', 'application/json')
       .send(User.toResponse(updatedUser));
-  } catch (error) {
-    reply.code(500).send('Oops!');
+  } catch (e) {
+    reply.code(500).send({ message: getErrorMessage(e) });
   }
 };

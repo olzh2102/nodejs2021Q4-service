@@ -15,9 +15,10 @@ export const getAll = (): Promise<UserResponse[]> =>
  * @returns promise to resolve single user by its id
  */
 export const getById = (id: string): Promise<UserResponse> =>
-  new Promise((resolve) => {
+  new Promise((resolve, reject) => {
     const user = users.find((u: User) => u.id === id);
-    resolve(User.toResponse(user as User));
+    if (user) resolve(User.toResponse(user as User));
+    else reject(new Error(`Could get user by id ${id}`));
   });
 
 /**
@@ -46,12 +47,17 @@ export const remove = async (id: string): Promise<string> =>
  * @param fields - can be any of { name, login, password }
  * @returns promise to resolve with updated user
  */
-export const update = async (id: string, fields: User): Promise<User> =>
+export const update = async (
+  id: string,
+  fields: Partial<User>
+): Promise<User> =>
   new Promise((resolve) => {
-    const user = { ...users.find((u: User) => u.id === id), ...fields };
+    const foundUser = users.find((u: User) => u.id === id);
+    const updatedUser = { ...foundUser, ...fields };
+
     users = users.map((u: User) => {
-      if (u.id === id) return user;
+      if (u.id === id) return updatedUser;
       return u;
-    });
-    resolve(user);
+    }) as User[];
+    resolve(updatedUser as User);
   });

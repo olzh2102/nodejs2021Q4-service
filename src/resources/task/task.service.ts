@@ -2,6 +2,7 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 
 import * as taskRepo from './task.repository';
 import { Task } from './task.model';
+import { getErrorMessage } from '../../common/utils';
 
 /**
  * GET: retrieves list of tasks
@@ -15,8 +16,8 @@ export const getTasks = async (
   try {
     const tasks = await taskRepo.getAll(req.params.boardId);
     reply.code(200).header('Content-Type', 'application/json').send(tasks);
-  } catch (error) {
-    reply.code(500).send('Oops!');
+  } catch (e) {
+    reply.code(500).send({ message: getErrorMessage(e) });
   }
 };
 
@@ -34,8 +35,8 @@ export const getSingleTask = async (
   try {
     const task = await taskRepo.getById(boardId, taskId);
     reply.code(200).header('Content-Type', 'application/json').send(task);
-  } catch (error) {
-    reply.code(404).send({ message: 'Not found!' });
+  } catch (e) {
+    reply.code(404).send({ message: getErrorMessage(e) });
   }
 };
 
@@ -54,8 +55,8 @@ export const addTask = async (
   try {
     const task = await taskRepo.create(boardId, newTask);
     reply.code(201).header('Content-Type', 'application/json').send(task);
-  } catch (error) {
-    reply.code(500).send('Oops!');
+  } catch (e) {
+    reply.code(500).send({ message: getErrorMessage(e) });
   }
 };
 
@@ -80,8 +81,8 @@ export const updateTask = async (
       .code(200)
       .header('Content-Type', 'application/json')
       .send(updatedTask);
-  } catch (error) {
-    reply.code(500).send('Oops!');
+  } catch (e) {
+    reply.code(500).send({ message: getErrorMessage(e) });
   }
 };
 
@@ -99,7 +100,7 @@ export const removeTask = async (
   try {
     const message = await taskRepo.remove(boardId, taskId);
     reply.code(200).send({ message });
-  } catch (error) {
-    reply.code(404).send({ message: 'Not found!' });
+  } catch (e) {
+    reply.code(404).send({ message: getErrorMessage(e) });
   }
 };

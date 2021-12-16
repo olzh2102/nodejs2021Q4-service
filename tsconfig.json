@@ -1,20 +1,3 @@
-// {
-//   "compilerOptions": {
-//     "target": "ES6",
-//     "module": "commonjs",
-//     "esModuleInterop": true,
-//     "moduleResolution": "node",
-//     "allowSyntheticDefaultImports": true,
-//     "allowJs": true,
-//     "noImplicitAny": true,
-//     "strict": true,
-//     "downlevelIteration": true,
-//     "rootDir": "src",
-//     "outDir": "dist"
-//   },
-//   "include": ["src"]
-// }
-
 {
   "compilerOptions": {
     "target": "ES2015",
