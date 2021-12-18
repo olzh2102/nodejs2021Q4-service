@@ -34,6 +34,10 @@ export class Task {
     this.boardId = boardId;
   }
 
+  /**
+   * @param task - instance of Task class
+   * @returns fields of task except columnId, boardId
+   */
   static toResponse(task: Task) {
     const { id, title, order, description, userId } = task;
     return { id, title, order, description, userId };

@@ -17,6 +17,10 @@ export class Board {
     this.columns = columns.map((c) => ({ ...c, id: uuid() }));
   }
 
+  /**
+   * @param board - instance of Board class
+   * @returns fields of board
+   */
   static toResponse(board: Board) {
     return board;
   }
