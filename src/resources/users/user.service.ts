@@ -22,6 +22,7 @@ export const getUsers = async (
     reply.code(200).header('Content-Type', 'application/json').send(users);
   } catch (e) {
     reply.code(500).send({ message: getErrorMessage(e) });
+    reply.log.error(req.id, req.url, req.method, 'COULD NOT GET ALL USERS');
   }
 };
 

@@ -1,13 +1,8 @@
 import build from './app';
 import config from './common/config';
-// import createLogger from './logger';
+import logger from './logger';
 
-const app = build({
-  logger: { prettyPrint: true },
-  disableRequestLogging: true,
-});
-
-// createLogger(app);
+const app = build({ logger });
 
 app.listen(config.PORT, (err: Error | null) => {
   if (err) {

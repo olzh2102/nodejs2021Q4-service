@@ -18,22 +18,8 @@ const build = (
   const app: FastifyInstance<Server, IncomingMessage, ServerResponse> =
     fastify(options);
 
-  const now = () => Date.now();
-
-  app.addHook('onRequest', (req, reply, done) => {
-    req.log.info({ url: req.raw.url, id: req.id }, 'received request');
-    done();
-  });
-
-  app.addHook('onResponse', (req, reply, done) => {
-    req.log.info(
-      {
-        url: req.raw.url, // add url to response as well for simple correlating
-        statusCode: reply.raw.statusCode,
-        durationMs: now(), // recreate duration in ms - use process.hrtime() - https://nodejs.org/api/process.html#process_process_hrtime_bigint for most accuracy
-      },
-      'request completed'
-    );
+  app.addHook('preHandler', (req, reply, done) => {
+    if (req.body) req.log.info({ body: req.body }, 'parsed body');
     done();
   });
 

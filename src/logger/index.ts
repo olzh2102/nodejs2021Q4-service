@@ -1,17 +1,22 @@
-import { FastifyInstance, FastifyRequest } from 'fastify';
+import { FastifyRequest, FastifyReply } from 'fastify';
 
-const createLogger = (server: FastifyInstance) => {
-  const now = () => Date.now();
-
-  server.addHook('onRequest', (req: FastifyRequest<any>, reply: any, done) => {
-    // eslint-disable-next-line no-param-reassign
-    (reply as any).startTime = now();
-    req.body.info({
-      url: req.raw.url,
-      id: req.id,
-    });
-    done();
-  });
+const logger = {
+  prettyPrint: true,
+  serializers: {
+    res(reply: FastifyReply) {
+      return {
+        statusCode: reply.statusCode,
+      };
+    },
+    req(request: FastifyRequest) {
+      return {
+        method: request.method,
+        url: request.url,
+        path: request.routerPath,
+        parameters: request.params,
+      };
+    },
+  },
 };
 
-export default createLogger;
+export default logger;
