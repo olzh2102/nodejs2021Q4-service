@@ -1,7 +1,7 @@
 import build from './app';
 import config from './common/config';
 
-const app = build({ logger: true });
+const app = build({ logger: { prettyPrint: true } });
 
 app.listen(config.PORT, (err: Error | null) => {
   if (err) {
