@@ -18,10 +18,10 @@ const build = (
   const app: FastifyInstance<Server, IncomingMessage, ServerResponse> =
     fastify(options);
 
-  app.addHook('preHandler', (req, reply, done) => {
-    if (req.body) req.log.info({ body: req.body }, 'parsed body');
-    done();
-  });
+  // app.addHook('preHandler', (req, reply, done) => {
+  //   if (req.body) req.log.info({ body: req.body }, 'parsed body');
+  //   done();
+  // });
 
   app.register(swaggerUI, {
     exposeRoute: true,

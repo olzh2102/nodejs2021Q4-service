@@ -6,8 +6,9 @@ let users: User[] = [];
  * @returns promise to resolve list of users
  */
 export const getAll = (): Promise<UserResponse[]> =>
-  new Promise((resolve) => {
-    resolve(users.map(User.toResponse));
+  new Promise((resolve, reject) => {
+    reject();
+    // resolve(users.map(User.toResponse));
   });
 
 /**
