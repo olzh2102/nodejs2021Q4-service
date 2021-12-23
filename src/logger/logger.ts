@@ -1,10 +1,11 @@
-import createLogger from 'pino';
+import pino from 'pino';
 
-const logger = createLogger({
+const logger = pino({
   transport: {
     target: 'pino-pretty',
     options: {
-      translateTime: 'SYS: dd-mm-yyyy HH:MM:ss',
+      destination: './logger.log',
+      translateTime: 'SYS:dd-mm-yyyy HH:MM:ss',
       ignore: 'pid,hostname',
     },
   },
