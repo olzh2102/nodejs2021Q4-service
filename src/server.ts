@@ -11,3 +11,7 @@ app.listen(config.PORT, (err: Error | null) => {
     process.exit(1);
   }
 });
+
+// TODO
+process.on('uncaughtException', () => {});
+process.on('unhandledRejection', () => {});
