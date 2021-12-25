@@ -1,9 +1,11 @@
-import pino from 'pino';
+import pino, { Level } from 'pino';
+
+import { LOG_LEVELS } from '../common/config';
 
 const transport = pino.transport({
   targets: [
     {
-      level: 'error',
+      level: LOG_LEVELS[1] as Level,
       target: 'pino-pretty',
       options: {
         destination: './logs/error.log',
@@ -13,7 +15,7 @@ const transport = pino.transport({
       },
     },
     {
-      level: 'trace',
+      level: LOG_LEVELS[5] as Level,
       target: 'pino-pretty',
       options: {
         destination: './logs/all.log',
@@ -27,9 +29,3 @@ const transport = pino.transport({
 
 const logger = pino(transport);
 export default logger;
-
-export const handler = pino.final(logger, (err, finalLogger, event) => {
-  finalLogger.info(`${event} caught`);
-  if (err) finalLogger.error(err, 'Error caused application exit');
-  process.exit(1);
-});

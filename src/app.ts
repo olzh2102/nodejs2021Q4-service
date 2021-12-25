@@ -4,6 +4,10 @@ import { fastify, FastifyInstance, FastifyPluginOptions } from 'fastify';
 import swaggerUI from 'fastify-swagger';
 
 import log from './logger/logger';
+import {
+  handleUncaughtExceptions,
+  handleUnhandledRejection,
+} from './common/utils';
 
 import userRoutes from './resources/users/user.router';
 import taskRoutes from './resources/task/task.router';
@@ -19,6 +23,9 @@ const build = (
 ): FastifyInstance<Server, IncomingMessage, ServerResponse> => {
   const app: FastifyInstance<Server, IncomingMessage, ServerResponse> =
     fastify(options);
+
+  handleUncaughtExceptions(log);
+  handleUnhandledRejection(log);
 
   app.register(swaggerUI, {
     exposeRoute: true,
@@ -43,18 +50,11 @@ const build = (
     log.error(err);
 
     if (reply.statusCode >= 400 && reply.statusCode < 500) {
-      app.log.info(err.message);
+      app.log.info({ name: err.name, message: err.message });
+      return;
     }
 
     app.log.error(err.message);
-  });
-
-  process.on('uncaughtException', (err: Error, origin: string) => {
-    log.fatal(err, 'uncaughtException', { origin });
-
-    setTimeout(() => {
-      process.exit(1);
-    }, 500);
   });
 
   return app;
