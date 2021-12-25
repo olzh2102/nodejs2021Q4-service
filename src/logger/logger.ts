@@ -27,3 +27,9 @@ const transport = pino.transport({
 
 const logger = pino(transport);
 export default logger;
+
+export const handler = pino.final(logger, (err, finalLogger, event) => {
+  finalLogger.info(`${event} caught`);
+  if (err) finalLogger.error(err, 'Error caused application exit');
+  process.exit(1);
+});

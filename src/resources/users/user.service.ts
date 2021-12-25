@@ -3,6 +3,7 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 import * as userRepo from './user.repository';
 import { User, UserResponse } from './user.model';
 import { getErrorMessage } from '../../common/utils';
+import log from '../../logger/logger';
 
 type RequestUser = { Params: { userId: string }; Body: User };
 type RequestType = FastifyRequest<RequestUser>;
@@ -21,8 +22,12 @@ export const getUsers = async (
 
     reply.code(200).header('Content-Type', 'application/json').send(users);
   } catch (e) {
+    log
+      .child({ module: 'User' })
+      .error(
+        `Error while getting users: url: ${req.url}, method: ${req.method}`
+      );
     reply.code(500).send({ message: getErrorMessage(e) });
-    reply.log.error(req.id, req.url, req.method, 'COULD NOT GET ALL USERS');
   }
 };
 
