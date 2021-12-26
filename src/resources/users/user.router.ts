@@ -1,6 +1,11 @@
 import { FastifyInstance, FastifyPluginOptions } from 'fastify';
 
-import schema from './user.schema';
+import {
+  oneUserSchema,
+  newUserSchema,
+  updateUserSchema,
+  deleteUserSchema,
+} from './user.schema';
 import {
   getUsers,
   getSingleUser,
@@ -21,28 +26,10 @@ function router(
   done: () => void
 ): void {
   fastify.get('/', getUsers);
-  fastify.get(
-    '/:userId',
-    { schema: { params: schema.params, response: schema.response } },
-    getSingleUser
-  );
-  fastify.post(
-    '/',
-    { schema: { body: schema.body, response: schema.response } },
-    addUser
-  );
-  fastify.delete('/:userId', { schema: { params: schema.params } }, removeUser);
-  fastify.put(
-    '/:userId',
-    {
-      schema: {
-        body: schema.body,
-        params: schema.params,
-        response: schema.response,
-      },
-    },
-    updateUser
-  );
+  fastify.get('/:userId', oneUserSchema, getSingleUser);
+  fastify.post('/', newUserSchema, addUser);
+  fastify.delete('/:userId', deleteUserSchema, removeUser);
+  fastify.put('/:userId', updateUserSchema, updateUser);
 
   done();
 }

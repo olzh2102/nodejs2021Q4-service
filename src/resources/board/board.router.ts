@@ -1,6 +1,11 @@
 import { FastifyInstance, FastifyPluginOptions } from 'fastify';
 
 import {
+  newBoardSchema,
+  updateBoardSchema,
+  deleteBoardSchema,
+} from './board.schema';
+import {
   getBoards,
   getSingleBoard,
   addBoard,
@@ -21,9 +26,9 @@ function router(
 ): void {
   fastify.get('/', getBoards);
   fastify.get('/:boardId', getSingleBoard);
-  fastify.post('/', addBoard);
-  fastify.delete('/:boardId', removeBoard);
-  fastify.put('/:boardId', updateBoard);
+  fastify.post('/', newBoardSchema, addBoard);
+  fastify.delete('/:boardId', deleteBoardSchema, removeBoard);
+  fastify.put('/:boardId', updateBoardSchema, updateBoard);
 
   done();
 }

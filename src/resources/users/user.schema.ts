@@ -34,4 +34,24 @@ const schema = {
   },
 };
 
-export default schema;
+const oneUserSchema = {
+  schema: { params: schema.params, response: schema.response },
+};
+
+const newUserSchema = {
+  schema: { body: schema.body, response: schema.response },
+};
+
+const updateUserSchema = {
+  schema: {
+    body: schema.body,
+    params: schema.params,
+    response: schema.response,
+  },
+};
+
+const deleteUserSchema = {
+  schema: { params: schema.params },
+};
+
+export { oneUserSchema, newUserSchema, updateUserSchema, deleteUserSchema };
