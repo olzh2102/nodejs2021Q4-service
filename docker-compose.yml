@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  dev:
+    build: .
+    container_name: fastify-api-service
+    restart: on-failure
+    env_file:
+      - .env
+    ports:
+      - 4000:4000 # host:container
+    volumes:
+      - logs:/usr/logs
+      - ./:/app
+    depends_on:
+      - database
