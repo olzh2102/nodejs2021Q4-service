@@ -5,8 +5,6 @@ services:
     build: .
     container_name: fastify-api-service
     restart: on-failure
-    env_file:
-      - .env
     ports:
       - 4000:4000 # host:container
     volumes:
