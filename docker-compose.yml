@@ -10,7 +10,19 @@ services:
     ports:
       - 4000:4000 # host:container
     volumes:
-      - logs:/usr/logs
+      - ./:/usr/logs
       - ./:/app
     depends_on:
       - database
+  database:
+    build: ./db
+    container_name: postgres-database
+    ports:
+      - 5432:5432
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes: 
+      - ./:/var/lib/postgresql/data
