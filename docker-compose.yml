@@ -11,7 +11,7 @@ services:
     container_name: fastify-api-service
     restart: on-failure
     ports:
-      - ${PORT}:${PORT} # host:container
+      - 4000:4000 # host:container
     volumes:
       - logs:/app/logs
       - .:/app
