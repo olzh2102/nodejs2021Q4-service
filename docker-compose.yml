@@ -1,0 +1,40 @@
+version: '3.8'
+
+volumes:
+  db:
+  logs:
+
+services:
+  dev:
+    build: .
+    image: olzh2102/fastify-rest-api
+    container_name: fastify-api-service
+    restart: on-failure
+    ports:
+      - 4000:4000 # host:container
+    volumes:
+      - logs:/app/logs
+      - .:/app
+    depends_on:
+      - database
+    networks:
+      - fastify-postgres-network
+  database:
+    build: ./db
+    image: olzh2102/postgres-database
+    container_name: postgres-database
+    ports:
+      - 5432:5432
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks:
+      - fastify-postgres-network
+
+networks:
+  fastify-postgres-network:
+    driver: bridge
