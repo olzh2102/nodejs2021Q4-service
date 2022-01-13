@@ -11,7 +11,7 @@ services:
     container_name: fastify-api-service
     restart: on-failure
     ports:
-      - 4000:4000 # host:container
+      - ${PORT}:${PORT} # host:container
     volumes:
       - logs:/app/logs
       - .:/app
@@ -24,7 +24,7 @@ services:
     image: olzh2102/postgres-database
     container_name: postgres-database
     ports:
-      - 5432:5432
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
