@@ -1,8 +1,22 @@
-const uuid = require('uuid');
+import { v4 as uuid } from 'uuid';
 
-class Task {
+export class Task {
+  readonly id: string;
+
+  title: string;
+
+  order: number;
+
+  description: string;
+
+  userId: null;
+
+  columnId: null;
+
+  boardId: null;
+
   constructor({
-    id = uuid.v4(),
+    id = uuid(),
     title = 'TASK',
     order = 0,
     description = '',
@@ -20,10 +34,12 @@ class Task {
     this.boardId = boardId;
   }
 
-  static toResponse(task) {
+  /**
+   * @param task - instance of Task class
+   * @returns fields of task except columnId, boardId
+   */
+  static toResponse(task: Task) {
     const { id, title, order, description, userId } = task;
     return { id, title, order, description, userId };
   }
 }
-
-module.exports = Task;
