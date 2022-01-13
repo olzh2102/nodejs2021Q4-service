@@ -3,6 +3,7 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 import * as userRepo from './user.repository';
 import { User, UserResponse } from './user.model';
 import { getErrorMessage } from '../../common/utils';
+// import log from '../../logger/logger';
 
 type RequestUser = { Params: { userId: string }; Body: User };
 type RequestType = FastifyRequest<RequestUser>;
