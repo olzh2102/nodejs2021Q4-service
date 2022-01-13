@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 import build from './app';
 import config from './common/config';
 import logger from './logger/logger';
