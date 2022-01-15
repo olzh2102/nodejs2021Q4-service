@@ -1,3 +1,4 @@
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
 export type UserResponse = {
@@ -8,13 +9,18 @@ export type UserResponse = {
 
 export type UserType = UserResponse & { password: string };
 
+@Entity('user')
 export class User implements UserType {
+  @PrimaryGeneratedColumn('uuid')
   readonly id: string;
 
+  @Column()
   login: string;
 
+  @Column()
   password: string;
 
+  @Column()
   name: string;
 
   constructor({

@@ -8,7 +8,7 @@ import { Task as TaskModel } from './resources/task/task.model';
 const ormConfig: ConnectionOptions = {
   type: 'postgres',
   database: config.POSTGRES_DB,
-  host: config.POSTGRES_HOSTNAME,
+  host: 'database',
   username: config.POSTGRES_USER,
   password: config.POSTGRES_PASSWORD,
   port: +config.POSTGRES_PORT,
