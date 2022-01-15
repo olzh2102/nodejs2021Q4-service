@@ -1,10 +1,15 @@
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
+@Entity('board')
 export class Board {
+  @PrimaryGeneratedColumn('uuid')
   readonly id: string;
 
+  @Column()
   title: string;
 
+  @Column('json')
   columns: { id: string; title: string; order: number }[];
 
   constructor({
