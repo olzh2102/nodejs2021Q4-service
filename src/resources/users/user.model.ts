@@ -12,16 +12,16 @@ export type UserType = UserResponse & { password: string };
 @Entity('user')
 export class User implements UserType {
   @PrimaryGeneratedColumn('uuid')
-  readonly id: string;
+  readonly id!: string;
 
   @Column()
-  login: string;
+  login!: string;
+
+  @Column({ select: false })
+  password!: string;
 
   @Column()
-  password: string;
-
-  @Column()
-  name: string;
+  name!: string;
 
   constructor({
     id = uuid(),

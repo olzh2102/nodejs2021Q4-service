@@ -107,7 +107,7 @@ export const updateUser = async (
     reply
       .code(200)
       .header('Content-Type', 'application/json')
-      .send(User.toResponse(updatedUser));
+      .send(User.toResponse(updatedUser as User));
   } catch (e) {
     reply.code(500).send({ message: getErrorMessage(e) });
   }
