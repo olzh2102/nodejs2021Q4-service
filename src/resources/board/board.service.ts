@@ -1,9 +1,11 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
+import { getRepository } from 'typeorm';
+import { v4 as uuid } from 'uuid';
 
-import * as boardRepo from './board.repository';
-import * as taskRepo from '../task/task.repository';
 import { Board } from './board.model';
 import { getErrorMessage } from '../../common/utils';
+
+const boardRepo = () => getRepository(Board);
 
 /**
  * GET: retrieves list of boards
@@ -15,7 +17,7 @@ export const getBoards = async (
   reply: FastifyReply
 ): Promise<void> => {
   try {
-    const boards = await boardRepo.getAll();
+    const boards = await boardRepo().find();
     reply.code(200).header('Content-Type', 'application/json').send(boards);
   } catch (e) {
     reply.code(500).send({ message: getErrorMessage(e) });
@@ -34,10 +36,14 @@ export const getSingleBoard = async (
   const { boardId } = req.params;
 
   try {
-    const board = await boardRepo.getById(boardId);
-    reply.code(200).header('Content-Type', 'application/json').send(board);
+    const board = await boardRepo().findOne(boardId);
+
+    if (board)
+      reply.code(200).header('Content-Type', 'application/json').send(board);
+    else
+      reply.code(404).send({ message: `Board with id ${boardId} not found` });
   } catch (e) {
-    reply.code(404).send({ message: getErrorMessage(e) });
+    reply.code(500).send({ message: getErrorMessage(e) });
   }
 };
 
@@ -50,14 +56,10 @@ export const addBoard = async (
   req: FastifyRequest<{ Body: Board }>,
   reply: FastifyReply
 ): Promise<void> => {
-  const board = new Board(req.body);
-
+  const newBoard = { id: uuid(), ...req.body };
   try {
-    await boardRepo.create(board);
-    reply
-      .code(201)
-      .header('Content-Type', 'application/json')
-      .send(Board.toResponse(board));
+    await boardRepo().insert([newBoard]);
+    reply.code(201).header('Content-Type', 'application/json').send(newBoard);
   } catch (e) {
     reply.code(404).send({ message: getErrorMessage(e) });
   }
@@ -75,7 +77,10 @@ export const updateBoard = async (
   const { boardId } = req.params;
 
   try {
-    const updatedBoard = await boardRepo.update(boardId, req.body);
+    const updatedBoard = await boardRepo().update(
+      { id: boardId },
+      { ...req.body }
+    );
     reply
       .code(200)
       .header('Content-Type', 'application/json')
@@ -97,10 +102,9 @@ export const removeBoard = async (
   const { boardId } = req.params;
 
   try {
-    const message = await boardRepo.remove(boardId);
-    await taskRepo.removeAllBy(boardId);
+    await boardRepo().delete(boardId);
 
-    reply.code(200).send({ message });
+    reply.code(204).send();
   } catch (e) {
     reply.code(404).send({ message: getErrorMessage(e) });
   }

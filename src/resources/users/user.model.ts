@@ -34,13 +34,4 @@ export class User implements UserType {
     this.login = login;
     this.password = password;
   }
-
-  /**
-   * @param user - instance of User class
-   * @returns fields of user except password
-   */
-  static toResponse(user: User) {
-    const { id, name, login } = user;
-    return { id, name, login };
-  }
 }
