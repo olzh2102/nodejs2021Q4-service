@@ -1,45 +1,38 @@
-import { v4 as uuid } from 'uuid';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
+import { User } from '../users/user.model';
+import { Board } from '../board/board.model';
+import { Columns as AppColumn } from '../board/column.model';
+
+@Entity('task')
 export class Task {
-  readonly id: string;
+  @PrimaryGeneratedColumn('uuid')
+  id?: string;
 
-  title: string;
+  @Column()
+  title?: string;
 
-  order: number;
+  @Column()
+  order?: number;
 
-  description: string;
+  @Column()
+  description?: string;
 
-  userId: null;
+  @Column({ nullable: true })
+  userId?: string | null;
 
-  columnId: null;
+  @Column({ nullable: true })
+  boardId?: string | null;
 
-  boardId: null;
+  @Column({ nullable: true })
+  columnId?: string | null;
 
-  constructor({
-    id = uuid(),
-    title = 'TASK',
-    order = 0,
-    description = '',
-    // userId = null,
-    columnId = null,
-    boardId = null,
-  } = {}) {
-    this.id = id;
-    this.title = title;
-    this.order = order;
-    this.description = description;
-    // this.userId = userId;
-    this.userId = null;
-    this.columnId = columnId;
-    this.boardId = boardId;
-  }
+  @ManyToOne(() => User, { onDelete: 'SET NULL' })
+  user?: User;
 
-  /**
-   * @param task - instance of Task class
-   * @returns fields of task except columnId, boardId
-   */
-  static toResponse(task: Task) {
-    const { id, title, order, description, userId } = task;
-    return { id, title, order, description, userId };
-  }
+  @ManyToOne(() => Board, { onDelete: 'CASCADE' })
+  board?: Board;
+
+  @ManyToOne(() => AppColumn, { onDelete: 'SET NULL' })
+  column?: AppColumn[];
 }

@@ -1,3 +1,4 @@
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
 export type UserResponse = {
@@ -8,14 +9,19 @@ export type UserResponse = {
 
 export type UserType = UserResponse & { password: string };
 
+@Entity('user')
 export class User implements UserType {
-  readonly id: string;
+  @PrimaryGeneratedColumn('uuid')
+  readonly id!: string;
 
-  login: string;
+  @Column()
+  login!: string;
 
-  password: string;
+  @Column({ select: false })
+  password!: string;
 
-  name: string;
+  @Column()
+  name!: string;
 
   constructor({
     id = uuid(),
@@ -27,14 +33,5 @@ export class User implements UserType {
     this.name = name;
     this.login = login;
     this.password = password;
-  }
-
-  /**
-   * @param user - instance of User class
-   * @returns fields of user except password
-   */
-  static toResponse(user: User) {
-    const { id, name, login } = user;
-    return { id, name, login };
   }
 }

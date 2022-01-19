@@ -1,8 +1,12 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
+import { getRepository } from 'typeorm';
+import { v4 as uuid } from 'uuid';
 
-import * as taskRepo from './task.repository';
+// import * as taskRepo from './task.repository';
 import { Task } from './task.model';
 import { getErrorMessage } from '../../common/utils';
+
+const taskRepo = () => getRepository(Task);
 
 /**
  * GET: retrieves list of tasks
@@ -14,7 +18,9 @@ export const getTasks = async (
   reply: FastifyReply
 ): Promise<void> => {
   try {
-    const tasks = await taskRepo.getAll(req.params.boardId);
+    const tasks = await taskRepo().find({
+      where: { boardId: req.params.boardId },
+    });
     reply.code(200).header('Content-Type', 'application/json').send(tasks);
   } catch (e) {
     reply.code(500).send({ message: getErrorMessage(e) });
@@ -30,10 +36,10 @@ export const getSingleTask = async (
   req: FastifyRequest<{ Params: { boardId: string; taskId: string } }>,
   reply: FastifyReply
 ): Promise<void> => {
-  const { boardId, taskId } = req.params;
+  const { taskId } = req.params;
 
   try {
-    const task = await taskRepo.getById(boardId, taskId);
+    const task = await taskRepo().findOne(taskId);
     reply.code(200).header('Content-Type', 'application/json').send(task);
   } catch (e) {
     reply.code(404).send({ message: getErrorMessage(e) });
@@ -46,15 +52,19 @@ export const getSingleTask = async (
  * @param reply - instance of http replies
  */
 export const addTask = async (
-  req: FastifyRequest<{ Params: { boardId: null }; Body: Task }>,
+  req: FastifyRequest<{ Params: { boardId: string }; Body: Task }>,
   reply: FastifyReply
 ) => {
   const { boardId } = req.params;
-  const newTask = req.body;
+  const newTask = {
+    id: uuid(),
+    boardId,
+    ...req.body,
+  };
 
   try {
-    const task = await taskRepo.create(boardId, newTask);
-    reply.code(201).header('Content-Type', 'application/json').send(task);
+    await taskRepo().insert([newTask]);
+    reply.code(201).header('Content-Type', 'application/json').send(newTask);
   } catch (e) {
     reply.code(500).send({ message: getErrorMessage(e) });
   }
@@ -72,11 +82,11 @@ export const updateTask = async (
   }>,
   reply: FastifyReply
 ) => {
-  const { taskId, boardId } = req.params;
+  const { taskId } = req.params;
   const fields = req.body;
 
   try {
-    const updatedTask = await taskRepo.update(boardId, taskId, fields);
+    const updatedTask = await taskRepo().update({ id: taskId }, { ...fields });
     reply
       .code(200)
       .header('Content-Type', 'application/json')
@@ -95,11 +105,11 @@ export const removeTask = async (
   req: FastifyRequest<{ Params: { boardId: string; taskId: string } }>,
   reply: FastifyReply
 ) => {
-  const { taskId, boardId } = req.params;
+  const { taskId } = req.params;
 
   try {
-    const message = await taskRepo.remove(boardId, taskId);
-    reply.code(200).send({ message });
+    await taskRepo().delete(taskId);
+    reply.code(204).send();
   } catch (e) {
     reply.code(404).send({ message: getErrorMessage(e) });
   }
