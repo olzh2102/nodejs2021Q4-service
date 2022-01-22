@@ -4,7 +4,7 @@ RUN mkdir -p /app/
 WORKDIR /app/
 COPY package*.json /app/
 
-RUN npm ci && npm cache clean --force
+RUN npm ci
 COPY . /app/
 
 EXPOSE ${PORT}

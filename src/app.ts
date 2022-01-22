@@ -1,13 +1,18 @@
 import path from 'path';
 import { Server, IncomingMessage, ServerResponse } from 'http';
 import { fastify, FastifyInstance, FastifyPluginOptions } from 'fastify';
+import { createConnection } from 'typeorm';
 import swaggerUI from 'fastify-swagger';
+import fastifyJWT from 'fastify-jwt';
 
+import ormConfig from './ormconfig';
 import log from './logger/logger';
 import {
   handleUncaughtExceptions,
   handleUnhandledRejection,
 } from './common/utils';
+
+import authenticate from './common/authenticate';
 
 import userRoutes from './resources/users/user.router';
 import taskRoutes from './resources/task/task.router';
@@ -18,9 +23,9 @@ import boardRoutes from './resources/board/board.router';
  * @returns fastify instance
  * */
 
-const build = (
+const build = async (
   options: FastifyPluginOptions = {}
-): FastifyInstance<Server, IncomingMessage, ServerResponse> => {
+): Promise<FastifyInstance<Server, IncomingMessage, ServerResponse>> => {
   const app: FastifyInstance<Server, IncomingMessage, ServerResponse> =
     fastify(options);
 
@@ -40,6 +45,12 @@ const build = (
   app.register(userRoutes, { prefix: '/users' });
   app.register(boardRoutes, { prefix: '/boards' });
   app.register(taskRoutes, { prefix: '/boards/:boardId/tasks' });
+
+  app.register(fastifyJWT, { secret: process.env.JWT_SECRET_KEY as string });
+  app.addHook('preValidation', authenticate);
+
+  const db = await createConnection(ormConfig);
+  app.decorate('db', db);
 
   app.addHook('preHandler', (req, _, done) => {
     if (req.body) req.log.info({ body: req.body }, 'parsed body');

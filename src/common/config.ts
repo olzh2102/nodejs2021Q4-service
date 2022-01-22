@@ -30,4 +30,6 @@ export default {
   POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD || 'postgres',
   POSTGRES_DB: process.env.POSTGRES_DB || 'postgres',
   POSTGRES_PORT: process.env.POSTGRES_PORT || 5432,
+  LOG_ERR_LEVEL: process.env.LOG_ERR_LEVEL as string,
+  LOG_INFO_LEVEL: process.env.LOG_INFO_LEVEL as string,
 };

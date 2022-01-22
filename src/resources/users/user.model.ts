@@ -1,14 +1,24 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { v4 as uuid } from 'uuid';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
-export type UserResponse = {
+import { Task } from '../task/task.model';
+
+export type LoginType = {
+  login: string;
+  password: string;
+};
+
+export type UserType = {
+  id: string;
+  name: string;
+  login: string;
+  password: string;
+};
+
+export type UserWithoutPasswordType = {
   id: string;
   name: string;
   login: string;
 };
-
-export type UserType = UserResponse & { password: string };
-
 @Entity('user')
 export class User implements UserType {
   @PrimaryGeneratedColumn('uuid')
@@ -23,15 +33,6 @@ export class User implements UserType {
   @Column()
   name!: string;
 
-  constructor({
-    id = uuid(),
-    name = 'USER',
-    login = 'user',
-    password = 'P@55w0rd',
-  } = {}) {
-    this.id = id;
-    this.name = name;
-    this.login = login;
-    this.password = password;
-  }
+  @OneToMany(() => Task, (task) => task.user)
+  tasks!: string;
 }

@@ -1,29 +1,33 @@
 {
-  "compilerOptions": {
-    "target": "ES2015",
-    "module": "commonjs",
-    "rootDir": "./src",
-    "outDir": "./dist",
-    "noImplicitAny": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "strictNullChecks": true /* When type checking, take into account `null` and `undefined`. */,
-    "strictFunctionTypes": true /* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */,
-    "strictBindCallApply": true /* Check that the arguments for `bind`, `call`, and `apply` methods match the original function. */,
-    "strictPropertyInitialization": true /* Check for class properties that are declared but not set in the constructor. */,
-    "noImplicitThis": true /* Enable error reporting when `this` is given the type `any`. */,
-    "useUnknownInCatchVariables": true /* Type catch clause variables as 'unknown' instead of 'any'. */,
-    "alwaysStrict": true /* Ensure 'use strict' is always emitted. */,
-    "noUnusedLocals": true /* Enable error reporting when a local variables aren't read. */,
-    "exactOptionalPropertyTypes": true /* Interpret optional property types as written, rather than adding 'undefined'. */,
-    "noImplicitReturns": true /* Enable error reporting for codepaths that do not explicitly return in a function. */,
-    "noFallthroughCasesInSwitch": true /* Enable error reporting for fallthrough cases in switch statements. */,
-    "noUncheckedIndexedAccess": true /* Include 'undefined' in index signature results */,
-    "noImplicitOverride": true /* Ensure overriding members in derived classes are marked with an override modifier. */,
-    "skipLibCheck": true /* Skip type checking all .d.ts files. */,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Node 16",
+  "extends": "@tsconfig/node16/tsconfig.json",
+  "ts-node": {
+    "files": true
   },
-  "include": ["src"]
+  "compilerOptions": {
+    "target": "es2021" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+    "lib": [
+      "es2021"
+    ] /* Specify a set of bundled library declaration files that describe the target runtime environment. */,
+    "module": "commonjs" /* Specify what module code is generated. */,
+
+    "baseUrl": ".",
+    "typeRoots": ["./typings"],
+    "rootDir": "./src" /* Specify the root folder within your source files. */,
+    "outDir": "./dist" /* Specify an output folder for all emitted files. */,
+    "moduleResolution": "node",
+    "removeComments": true /* Disable emitting comments. */,
+    "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables `allowSyntheticDefaultImports` for type compatibility. */,
+    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
+
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+
+    "strict": true /* Enable all strict type-checking options. */,
+    "noImplicitAny": true /* Enable error reporting for expressions and declarations with an implied `any` type.. */,
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */
+  },
+  "include": ["src/**/*", "typings"],
+  "exclude": ["node_modules", "**/*.spec.ts", "**/*.test.ts", "logs"]
 }
