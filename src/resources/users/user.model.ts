@@ -1,40 +1,38 @@
-import { v4 as uuid } from 'uuid';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
-export type UserResponse = {
+import { Task } from '../task/task.model';
+
+export type LoginType = {
+  login: string;
+  password: string;
+};
+
+export type UserType = {
+  id: string;
+  name: string;
+  login: string;
+  password: string;
+};
+
+export type UserWithoutPasswordType = {
   id: string;
   name: string;
   login: string;
 };
-
-export type UserType = UserResponse & { password: string };
-
+@Entity('user')
 export class User implements UserType {
-  readonly id: string;
+  @PrimaryGeneratedColumn('uuid')
+  readonly id!: string;
 
-  login: string;
+  @Column()
+  login!: string;
 
-  password: string;
+  @Column({ select: false })
+  password!: string;
 
-  name: string;
+  @Column()
+  name!: string;
 
-  constructor({
-    id = uuid(),
-    name = 'USER',
-    login = 'user',
-    password = 'P@55w0rd',
-  } = {}) {
-    this.id = id;
-    this.name = name;
-    this.login = login;
-    this.password = password;
-  }
-
-  /**
-   * @param user - instance of User class
-   * @returns fields of user except password
-   */
-  static toResponse(user: User) {
-    const { id, name, login } = user;
-    return { id, name, login };
-  }
+  @OneToMany(() => Task, (task) => task.user)
+  tasks!: string;
 }

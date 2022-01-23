@@ -1,9 +1,12 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
+import { getRepository } from 'typeorm';
 
-import * as userRepo from './user.repository';
+// import * as userRepo from './user.repository';
 import { User, UserResponse } from './user.model';
 import { getErrorMessage } from '../../common/utils';
 // import log from '../../logger/logger';
+
+const userRepo = () => getRepository(User);
 
 type RequestUser = { Params: { userId: string }; Body: User };
 type RequestType = FastifyRequest<RequestUser>;
@@ -18,7 +21,7 @@ export const getUsers = async (
   reply: FastifyReply
 ): Promise<void> => {
   try {
-    const users = await userRepo.getAll();
+    const users = await userRepo().find();
 
     reply.code(200).header('Content-Type', 'application/json').send(users);
   } catch (e) {
@@ -38,12 +41,14 @@ export const getSingleUser = async (
   const { userId } = req.params;
 
   try {
-    const user: UserResponse = await userRepo.getById(userId);
+    const user: UserResponse | undefined = await userRepo().findOne(userId);
 
-    reply
-      .code(200)
-      .header('Content-Type', 'application/json')
-      .send(User.toResponse(user as User));
+    if (user)
+      reply.code(200).header('Content-Type', 'application/json').send(user);
+    else
+      reply
+        .code(404)
+        .send({ message: `Could not find user with id ${userId}` });
   } catch (e) {
     reply.code(500).send({ message: getErrorMessage(e) });
   }
@@ -58,12 +63,14 @@ export const addUser = async (
   req: RequestType,
   reply: FastifyReply
 ): Promise<void> => {
-  const newUser = req.body;
+  let newUser = new User(req.body);
 
   try {
-    const user = await userRepo.create(newUser);
+    await userRepo().insert(newUser);
+    newUser = (await userRepo().findOne(newUser.id)) as User;
 
-    reply.code(201).header('Content-Type', 'application/json').send(user);
+    if (newUser)
+      reply.code(201).header('Content-Type', 'application/json').send(newUser);
   } catch (e) {
     reply.code(500).send({ message: getErrorMessage(e) });
   }
@@ -81,9 +88,9 @@ export const removeUser = async (
   const { userId } = req.params;
 
   try {
-    const message = await userRepo.remove(userId);
+    await userRepo().delete(userId);
 
-    reply.code(200).send({ message });
+    reply.status(204).send();
   } catch (e) {
     reply.code(500).send({ message: getErrorMessage(e) });
   }
@@ -102,12 +109,14 @@ export const updateUser = async (
   const { userId } = req.params;
 
   try {
-    const updatedUser = await userRepo.update(userId, fields);
+    await userRepo().update(
+      { id: userId },
+      {
+        ...fields,
+      }
+    );
 
-    reply
-      .code(200)
-      .header('Content-Type', 'application/json')
-      .send(User.toResponse(updatedUser));
+    reply.status(200).send({ ...fields, id: userId });
   } catch (e) {
     reply.code(500).send({ message: getErrorMessage(e) });
   }

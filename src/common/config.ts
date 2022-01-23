@@ -25,4 +25,11 @@ export default {
   AUTH_MODE: process.env.AUTH_MODE === 'true',
   LOG_LEVEL,
   LOG_LEVEL_NAME: LOG_LEVELS[LOG_LEVEL],
+  POSTGRES_HOSTNAME: process.env.POSTGRES_HOSTNAME || 'localhost',
+  POSTGRES_USER: process.env.POSTGRES_USER || 'postgres',
+  POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD || 'postgres',
+  POSTGRES_DB: process.env.POSTGRES_DB || 'postgres',
+  POSTGRES_PORT: process.env.POSTGRES_PORT || 5432,
+  LOG_ERR_LEVEL: process.env.LOG_ERR_LEVEL as string,
+  LOG_INFO_LEVEL: process.env.LOG_INFO_LEVEL as string,
 };
